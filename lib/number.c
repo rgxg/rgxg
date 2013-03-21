@@ -25,30 +25,30 @@
 /* needed for rgxg_number_* */
 #include "rgxg/number.h"
 
-/* needed for LONG_MAX */
+/* needed for LLONG_MAX */
 #include <limits.h>
 
 /* needed for NULL */
 #include <stdlib.h>
 
 /* pre-compile limits */
-long limits[] = {
-    0L, LONG_MAX, LONG_MAX/2, LONG_MAX/3, LONG_MAX/4, LONG_MAX/5,
-    LONG_MAX/6, LONG_MAX/7, LONG_MAX/8, LONG_MAX/9, LONG_MAX/10,
-    LONG_MAX/11, LONG_MAX/12, LONG_MAX/13, LONG_MAX/14, LONG_MAX/15,
-    LONG_MAX/16, LONG_MAX/17, LONG_MAX/18, LONG_MAX/19, LONG_MAX/20,
-    LONG_MAX/21, LONG_MAX/22, LONG_MAX/23, LONG_MAX/24, LONG_MAX/25,
-    LONG_MAX/26, LONG_MAX/27, LONG_MAX/28, LONG_MAX/29, LONG_MAX/30,
-    LONG_MAX/31, LONG_MAX/32
+long long limits[] = {
+    0L, LLONG_MAX, LLONG_MAX/2, LLONG_MAX/3, LLONG_MAX/4, LLONG_MAX/5,
+    LLONG_MAX/6, LLONG_MAX/7, LLONG_MAX/8, LLONG_MAX/9, LLONG_MAX/10,
+    LLONG_MAX/11, LLONG_MAX/12, LLONG_MAX/13, LLONG_MAX/14, LLONG_MAX/15,
+    LLONG_MAX/16, LLONG_MAX/17, LLONG_MAX/18, LLONG_MAX/19, LLONG_MAX/20,
+    LLONG_MAX/21, LLONG_MAX/22, LLONG_MAX/23, LLONG_MAX/24, LLONG_MAX/25,
+    LLONG_MAX/26, LLONG_MAX/27, LLONG_MAX/28, LLONG_MAX/29, LLONG_MAX/30,
+    LLONG_MAX/31, LLONG_MAX/32
 };
 
 #define EASY_CHAR(char) \
     if (regex) { regex[n] = char; } \
     n++;
 
-static int rgxg_number_of_digits_long(long number, int base) {
-    long power = base;
-    long limit = limits[base];
+static int rgxg_number_of_digits_long_long(long long number, int base) {
+    long long power = base;
+    long long limit = limits[base];
     int n = 1;
 
     while(number >= power) {
@@ -60,21 +60,21 @@ static int rgxg_number_of_digits_long(long number, int base) {
     return n;
 }
 
-static long rgxg_power(int base, int exp) {
-    long r = 1;
+static long long rgxg_power(int base, int exp) {
+    long long r = 1;
     while (exp--) { r *=base; }
     return r;
 }
 
-static char rgxg_base32_char(long number, int upper) {
+static char rgxg_base32_char(long long number, int upper) {
     /* 'A'-10 = '7', 'a'-10='W' */
     return number+(number < 10 ? '0' : (upper ? '7' : 'W'));
 }
 
-static int rgxg_base32_range(long first, long
+static int rgxg_base32_range(long long first, long long
         last, char* regex, rgxg_options_t options) {
     /* size 4 is enough as long base <=36 */
-    long stk[4];
+    long long stk[4];
     int top, brackets;
     int n = 0;
 
@@ -144,10 +144,10 @@ static int rgxg_base32_range(long first, long
         n = error; \
     } else
 
-int rgxg_number(long number, int base, char* regex, rgxg_options_t
+int rgxg_number(long long number, int base, char* regex, rgxg_options_t
         options) {
     int n;
-    long m;
+    long long m;
 
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
     EASY_IF_ERROR_ELSE(number < 0, RGXG_ERROR_NEGARG) {
@@ -183,9 +183,9 @@ int rgxg_number(long number, int base, char* regex, rgxg_options_t
 #define EASY_BASE32_RANGE_ASSIGNMENT(first, last) \
     n += rgxg_base32_range(first, last, (regex ? regex+n : NULL), options);
 
-int rgxg_number_range(long first, long last, int base, char* regex,
+int rgxg_number_range(long long first, long long last, int base, char* regex,
         rgxg_options_t options) {
-    long prefix, prefix_range_first, prefix_range_last, current_last;
+    long long prefix, prefix_range_first, prefix_range_last, current_last;
     int n, min, max, number_of_leading_zeros, parenthesis, max_num_of_digits;
 
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
@@ -193,7 +193,7 @@ int rgxg_number_range(long first, long last, int base, char* regex,
     EASY_IF_ERROR_ELSE(first > last , RGXG_ERROR_RANGE) {
         n = 0;
         parenthesis = 0;
-        max_num_of_digits = rgxg_number_of_digits_long(last, base);
+        max_num_of_digits = rgxg_number_of_digits_long_long(last, base);
         current_last = last;
 
         do {
@@ -232,7 +232,7 @@ int rgxg_number_range(long first, long last, int base, char* regex,
             }
 
             if (RGXG_LEADINGZERO&options) {
-                number_of_leading_zeros = max_num_of_digits-(prefix ? rgxg_number_of_digits_long(prefix, base): 0)-max-1;
+                number_of_leading_zeros = max_num_of_digits-(prefix ? rgxg_number_of_digits_long_long(prefix, base): 0)-max-1;
                 if (number_of_leading_zeros < 5) { /* 0000000000 -> 0{10} but 0000 -> 0000 */
                     while (number_of_leading_zeros-- > 0) {
                         EASY_CHAR('0');
@@ -286,16 +286,16 @@ int rgxg_number_range(long first, long last, int base, char* regex,
     return n;
 }
 
-int rgxg_number_greaterequal(long number, int base, char* regex, rgxg_options_t options) {
+int rgxg_number_greaterequal(long long number, int base, char* regex, rgxg_options_t options) {
     int n, count, is_power_of_base;
-    long boundary;
+    long long boundary;
     rgxg_options_t range_options;
 
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
     EASY_IF_ERROR_ELSE(number < 0, RGXG_ERROR_NEGARG)
-    EASY_IF_ERROR_ELSE(number > rgxg_power(base, rgxg_number_of_digits_long(limits[base], base)), RGXG_ERROR_ARG2BIG) {
+    EASY_IF_ERROR_ELSE(number > rgxg_power(base, rgxg_number_of_digits_long_long(limits[base], base)), RGXG_ERROR_ARG2BIG) {
         n = 0;
-        count = rgxg_number_of_digits_long(number ,base);
+        count = rgxg_number_of_digits_long_long(number ,base);
 
         boundary = rgxg_power(base,count-1);
         is_power_of_base = (number != boundary); /* ([1-9][0-9]{3,}|[1-9][0-9]{2}) => [1-9][0-9]{2,} */

@@ -1,2 +1,8 @@
+2013-03-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/number.h, lib/number.c, src/range.c:
+	  - changed type of input numbers to 'long long'
+	* configure.ac:
+	  - use 'AC_PROG_CC_C99' instead of AC_PROG_CC
+
 2013-03-15	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* Initial version

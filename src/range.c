@@ -28,13 +28,13 @@
 /* needed for rgxg_number* */
 #include "rgxg/number.h"
 
-/* needed for atoi, strtol */
+/* needed for atoi, strtoll */
 #include <stdlib.h>
 
-/* used with strtol */
+/* used with strtoll */
 #include <errno.h>
 
-/* needed for LONG_MAX */
+/* needed for LLONG_MAX */
 #include <limits.h>
 
 /* needed for fprintf */
@@ -48,7 +48,7 @@
 
 int base, input_base;
 
-long first, last;
+long long first, last;
 
 rgxg_options_t options;
 
@@ -140,17 +140,17 @@ int range_argv_parse (int argc, char **argv) {
         optind++; /* skip command string */
         if (argc > optind) {
             if (is_string_of_digits(argv[optind])) {
-                first = strtol(argv[optind], NULL, input_base);
-                if (first == LONG_MAX && errno == ERANGE) {
-                    fprintf (stderr, "rgxg range: first number '%s' must be lesser than or equal to %ld.\n", argv[optind], LONG_MAX);
+                first = strtoll(argv[optind], NULL, input_base);
+                if (first == LLONG_MAX && errno == ERANGE) {
+                    fprintf (stderr, "rgxg range: first number '%s' must be lesser than or equal to %lld.\n", argv[optind], LLONG_MAX);
                     cont = 0;
                     exit_status = 1;
                 } else {
                     if (argc > ++optind) {
                         if (is_string_of_digits(argv[optind])) {
-                            last = strtol(argv[optind], NULL, input_base);
-                            if (last == LONG_MAX && errno == ERANGE) {
-                                fprintf (stderr, "rgxg range: last number '%s' must be lesser than or equal to %ld.\n", argv[optind], LONG_MAX);
+                            last = strtoll(argv[optind], NULL, input_base);
+                            if (last == LLONG_MAX && errno == ERANGE) {
+                                fprintf (stderr, "rgxg range: last number '%s' must be lesser than or equal to %lld.\n", argv[optind], LLONG_MAX);
                                 cont = 0;
                                 exit_status = 1;
                             }
@@ -189,11 +189,11 @@ int range_generate_regex (char * regex) {
     switch (n) {
         /* RGXG_ERROR_BASE, RGXG_ERROR_NEGARG handled in range_argv_parse */
         case RGXG_ERROR_RANGE:
-            fprintf (stderr, "rgxg range: range from %ld to %ld is invalid.\n", first, last);
+            fprintf (stderr, "rgxg range: range from %lld to %lld is invalid.\n", first, last);
             exit_status = 1;
             break;
         case RGXG_ERROR_ARG2BIG:
-            fprintf (stderr, "rgxg range: the number '%ld' is too large.\n", first);
+            fprintf (stderr, "rgxg range: the number '%lld' is too large.\n", first);
             exit_status = 1;
             break;
     }

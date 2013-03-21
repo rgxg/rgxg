@@ -19,7 +19,7 @@ AC_SUBST(LIB_AGE)
 
 AM_INIT_AUTOMAKE([1.10 -Wall -Werror silent-rules subdir-objects])
 
-AC_PROG_CC
+AC_PROG_CC_C99
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 AM_PROG_CC_C_O
