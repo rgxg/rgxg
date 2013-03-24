@@ -41,10 +41,10 @@ int exit_status;
 typedef struct module_s {
     char *command;
     char *description;
-    int (*set_defaults) ();
+    void (*set_defaults) ();
     int (*argv_parse) (int , char **);
     int (*generate_regex) (char *);
-    int (*print_help) ();
+    void (*print_help) ();
 } module_t;
 
 module_t modules[] = {

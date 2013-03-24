@@ -22,6 +22,8 @@
  *     distribution.
  */
 
+#include "range.h"
+
 /* needed for exit_status */
 #include "rgxg.h"
 
@@ -62,7 +64,7 @@ static int is_string_of_digits(const char *string) {
     return 1;
 }
 
-int range_print_help () {
+void range_print_help () {
     fprintf(stdout,
         "Usage: rgxg range [options] FIRST [LAST]\n\n"
         "    -b BASE    match the numbers with base BASE (default is base 10)\n"

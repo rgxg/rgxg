@@ -3,6 +3,9 @@
 	  +lib/common_macros.h, Makefile.am:
 	  - provide 'rgxg_utils_escape_string' function
 	  - provide 'rgxg_utils_alternation' function
+	* src/main.c, src/range.h, src/range.c:
+	  - include 'range.h' in 'range.c'
+	  - fixed return type of 'set_default' and 'print_help' functions
 
 2013-03-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/number.h, lib/number.c, src/range.c:
