@@ -24,7 +24,9 @@
 
 #include "config.h"
 
-/* needed for range_* */
+/* needed for rgxg commands */
+#include "alternation.h"
+#include "escape.h"
 #include "range.h"
 
 /* needed for malloc, free */
@@ -47,8 +49,15 @@ typedef struct module_s {
     void (*print_help) ();
 } module_t;
 
+#define EASY_MODULE(command, description) \
+    { #command, description, \
+    command##_set_defaults, command##_argv_parse, \
+    command##_generate_regex, command##_print_help }
+
 module_t modules[] = {
-    { "range" ,        "Create regex that matches integers in a given range", range_set_defaults, range_argv_parse, range_generate_regex, range_print_help}
+    EASY_MODULE(alternation,    "Create regex that matches any of the given patterns"),
+    EASY_MODULE(escape,         "Escape the given string for use in a regex"),
+    EASY_MODULE(range,          "Create regex that matches integers in a given range")
 };
 
 static void print_version(void) {

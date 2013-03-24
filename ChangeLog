@@ -6,6 +6,9 @@
 	* src/main.c, src/range.h, src/range.c:
 	  - include 'range.h' in 'range.c'
 	  - fixed return type of 'set_default' and 'print_help' functions
+	* +src/escape.h, +src/escape.c, +src/alternation.h, +src/alternation.c,
+	  +src/common_macros.h, src/main.c, Makefile.am:
+	  - provide 'escape' and 'alternation' command
 
 2013-03-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/number.h, lib/number.c, src/range.c:

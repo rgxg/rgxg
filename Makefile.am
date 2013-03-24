@@ -10,7 +10,11 @@ librgxginclude_HEADERS = include/rgxg/number.h include/rgxg/types.h \
 						 include/rgxg/utils.h
 
 bin_PROGRAMS = rgxg
-rgxg_SOURCES = src/main.c src/rgxg.h src/range.h src/range.c
+rgxg_SOURCES = src/main.c src/rgxg.h \
+			   src/common_macros.h \
+			   src/alternation.h src/alternation.c \
+			   src/escape.h src/escape.c \
+			   src/range.h src/range.c
 rgxg_CFLAGS = -I$(top_srcdir)/include
 rgxg_LDADD = librgxg.la
 
