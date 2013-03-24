@@ -1,3 +1,9 @@
+2013-03-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* +include/rgxg/utils.h, +lib/utils.c,
+	  +lib/common_macros.h, Makefile.am:
+	  - provide 'rgxg_utils_escape_string' function
+	  - provide 'rgxg_utils_alternation' function
+
 2013-03-21	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/number.h, lib/number.c, src/range.c:
 	  - changed type of input numbers to 'long long'
