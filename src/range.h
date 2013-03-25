@@ -25,12 +25,12 @@
 #ifndef _RANGE_H_INCLUDED
 #define _RANGE_H_INCLUDED
 
-void range_set_defaults ();
+extern void range_set_defaults ();
 
-int range_argv_parse (int argc, char **argv);
+extern int range_argv_parse (int argc, char **argv);
 
-int range_generate_regex (char *regex);
+extern int range_generate_regex (char *regex);
 
-void range_print_help ();
+extern void range_print_help ();
 
 #endif /* _RANGE_H_INCLUDED */

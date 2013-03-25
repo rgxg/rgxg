@@ -1,3 +1,7 @@
+2013-03-25	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/number.h, src/range.h:
+	  - added missing 'extern' keyword to function declarations
+
 2013-03-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* +include/rgxg/utils.h, +lib/utils.c,
 	  +lib/common_macros.h, Makefile.am:
