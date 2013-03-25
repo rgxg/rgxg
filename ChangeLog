@@ -3,6 +3,8 @@
 	  - added missing 'extern' keyword to function declarations
 	* include/rgxg/utils.h, src/escape.h, src/alternation.h:
 	  - added missing parameter names to function declarations
+	* lib/number.c:
+	  - use 'lib/common_macros.h'
 
 2013-03-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* +include/rgxg/utils.h, +lib/utils.c,

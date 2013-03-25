@@ -25,6 +25,9 @@
 /* needed for rgxg_number_* */
 #include "rgxg/number.h"
 
+/* needed for EASY_CHAR */
+#include "common_macros.h"
+
 /* needed for LLONG_MAX */
 #include <limits.h>
 
@@ -41,10 +44,6 @@ long long limits[] = {
     LLONG_MAX/26, LLONG_MAX/27, LLONG_MAX/28, LLONG_MAX/29, LLONG_MAX/30,
     LLONG_MAX/31, LLONG_MAX/32
 };
-
-#define EASY_CHAR(char) \
-    if (regex) { regex[n] = char; } \
-    n++;
 
 static int rgxg_number_of_digits_long_long(long long number, int base) {
     long long power = base;
