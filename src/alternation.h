@@ -27,9 +27,9 @@
 
 extern void alternation_set_defaults ();
 
-extern int alternation_argv_parse (int, char **);
+extern int alternation_argv_parse (int argc, char **argv);
 
-extern int alternation_generate_regex (char *);
+extern int alternation_generate_regex (char *regex);
 
 extern void alternation_print_help ();
 

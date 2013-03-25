@@ -27,9 +27,9 @@
 
 extern void escape_set_defaults ();
 
-extern int escape_argv_parse (int, char **);
+extern int escape_argv_parse (int argc, char **argv);
 
-extern int escape_generate_regex (char *);
+extern int escape_generate_regex (char *regex);
 
 extern void escape_print_help ();
 
