@@ -5,6 +5,8 @@
 	  - added missing parameter names to function declarations
 	* lib/number.c:
 	  - use 'lib/common_macros.h'
+	* m4/lib_version.m4, README:
+	  - added note about libtool version
 
 2013-03-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* +include/rgxg/utils.h, +lib/utils.c,

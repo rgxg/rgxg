@@ -42,6 +42,10 @@ configuration files first:
 
     $ sh ./autogen.sh
 
+NOTE: The library version (see m4/lib_version.m4) is only changed if needed
+      just before a public release (i.e. a tarball release announced on the
+      rgxg-announce mailing list).
+
 For generic installation instructions please see the INSTALL file.
 
 In short, just type:
