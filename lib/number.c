@@ -182,17 +182,22 @@ int rgxg_number(long long number, int base, char* regex, rgxg_options_t
 #define EASY_BASE32_RANGE_ASSIGNMENT(first, last) \
     n += rgxg_base32_range(first, last, (regex ? regex+n : NULL), options);
 
-int rgxg_number_range(long long first, long long last, int base, char* regex,
-        rgxg_options_t options) {
+int rgxg_number_range(long long first, long long last, int base, int
+        min_length, char* regex, rgxg_options_t options) {
     long long prefix, prefix_range_first, prefix_range_last, current_last;
     int n, min, max, number_of_leading_zeros, parenthesis, max_num_of_digits;
 
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
-    EASY_IF_ERROR_ELSE(first < 0 || last < 0, RGXG_ERROR_NEGARG)
+    EASY_IF_ERROR_ELSE(first < 0 || last < 0 || min_length < 0, RGXG_ERROR_NEGARG)
     EASY_IF_ERROR_ELSE(first > last , RGXG_ERROR_RANGE) {
         n = 0;
         parenthesis = 0;
-        max_num_of_digits = rgxg_number_of_digits_long_long(last, base);
+        if (RGXG_LEADINGZERO&options) {
+            max_num_of_digits = rgxg_number_of_digits_long_long(last, base);
+            if (max_num_of_digits < min_length) {
+                max_num_of_digits = min_length;
+            }
+        }
         current_last = last;
 
         do {
@@ -285,27 +290,30 @@ int rgxg_number_range(long long first, long long last, int base, char* regex,
     return n;
 }
 
-int rgxg_number_greaterequal(long long number, int base, char* regex, rgxg_options_t options) {
-    int n, count, is_power_of_base;
+int rgxg_number_greaterequal(long long number, int base, int min_length, char* regex, rgxg_options_t options) {
+    int n, count, no_power_of_base;
     long long boundary;
-    rgxg_options_t range_options;
 
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
-    EASY_IF_ERROR_ELSE(number < 0, RGXG_ERROR_NEGARG)
+    EASY_IF_ERROR_ELSE(number < 0 || min_length < 0, RGXG_ERROR_NEGARG)
     EASY_IF_ERROR_ELSE(number > rgxg_power(base, rgxg_number_of_digits_long_long(limits[base], base)), RGXG_ERROR_ARG2BIG) {
         n = 0;
         count = rgxg_number_of_digits_long_long(number ,base);
+        if (RGXG_LEADINGZERO&options && min_length > count+1) {
+            count = min_length-1;
+        }
 
         boundary = rgxg_power(base,count-1);
-        is_power_of_base = (number != boundary); /* ([1-9][0-9]{3,}|[1-9][0-9]{2}) => [1-9][0-9]{2,} */
+        no_power_of_base = (number != boundary) || RGXG_LEADINGZERO&options; /* ([1-9][0-9]{3,}|[1-9][0-9]{2}) => [1-9][0-9]{2,}  but ([1-9][0-9]+|0[1-9]) => ([1-9][0-9]+|0[1-9]) */
 
-        if (!(RGXG_NOOUTERPARENS&options) && number != 1 && is_power_of_base) {
+        if (!(RGXG_NOOUTERPARENS&options) && no_power_of_base) {
             EASY_CHAR('(');
         }
 
         EASY_BASE32_RANGE_ASSIGNMENT(1, base-1)
         EASY_BASE32_RANGE_ASSIGNMENT(0, base-1)
-        count -= (!is_power_of_base);
+        count -= (!no_power_of_base);
+
         if (count == 0) { /* [1-9][0-9]{0,} => [1-9][0-9]* */
             EASY_CHAR('*');
         } else if (count == 1) { /* [1-9][0-9]{1,} => [1-9][0-9]+ */
@@ -316,16 +324,10 @@ int rgxg_number_greaterequal(long long number, int base, char* regex, rgxg_optio
             EASY_CHAR(',');
             EASY_CHAR('}');
         }
-        if (is_power_of_base) {
+        if (no_power_of_base) {
             boundary *= base;
             EASY_CHAR('|');
-            if (RGXG_LEADINGZERO&options) {
-                EASY_CHAR('0');
-                range_options = options&(~RGXG_NOOUTERPARENS);
-            } else {
-                range_options = RGXG_NOOUTERPARENS|options;
-            }
-            n += rgxg_number_range(number, boundary-1, base, (regex ? regex+n : NULL), range_options);
+            n += rgxg_number_range(number, boundary-1, base, count+1, (regex ? regex+n : NULL), RGXG_NOOUTERPARENS|options);
             if (!(RGXG_NOOUTERPARENS&options)) {
                 EASY_CHAR(')');
             }

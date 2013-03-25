@@ -7,6 +7,11 @@
 	  - use 'lib/common_macros.h'
 	* m4/lib_version.m4, README:
 	  - added note about libtool version
+	* include/rgxg/number.h, lib/number.c, src/range.c, man/rgxg.1:
+	  - rgxg_number_greaterequal: fixed bug with leading zeros
+	  - added 'min_length' parameter to 'rgxg_number_range'
+	    and 'rgxg_number_greaterequal' functions
+	  - added '-m' option to 'range' command
 
 2013-03-24	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* +include/rgxg/utils.h, +lib/utils.c,

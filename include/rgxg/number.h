@@ -31,10 +31,10 @@
 extern int rgxg_number(long long number, int base, char* regex,
         rgxg_options_t options);
 
-extern int rgxg_number_range(long long first, long long last, int base, char* regex,
-        rgxg_options_t options);
+extern int rgxg_number_range(long long first, long long last, int base,
+        int min_length, char* regex, rgxg_options_t options);
 
-extern int rgxg_number_greaterequal(long long number, int base, char* regex,
-        rgxg_options_t options);
+extern int rgxg_number_greaterequal(long long number, int base,
+        int min_length, char* regex, rgxg_options_t options);
 
 #endif /* _RGXG_NUMBER_H_INCLUDED */

@@ -50,6 +50,8 @@
 
 int base, input_base;
 
+long min_length;
+
 long long first, last;
 
 rgxg_options_t options;
@@ -72,7 +74,9 @@ void range_print_help () {
         "    -l         only match lower case letters\n"
         "    -U         only match upper case letters\n"
         "    -h         display this help message\n"
-        "    -z         only match numbers with leading zeros\n\n"
+        "    -z         only match numbers with leading zeros\n"
+        "    -m LENGTH  with -z, only match numbers with a minimum length LENGTH\n"
+        "\n"
     );
 }
 
@@ -80,6 +84,7 @@ void range_set_defaults () {
     base = 10;
     input_base = 10;
     options = 0;
+    min_length = 0;
 }
 
 #define EASY_BASE_PARSE(option, variable) \
@@ -95,7 +100,7 @@ case option: \
 int range_argv_parse (int argc, char **argv) {
     int cont = 1;
     int c;
-    while (cont && (c = getopt (argc, argv, ":b:hzNUl")) != -1)
+    while (cont && (c = getopt (argc, argv, ":b:hm:zNUl")) != -1)
         switch (c) {
             case 'h':
                 range_print_help();
@@ -115,6 +120,14 @@ int range_argv_parse (int argc, char **argv) {
                     exit_status = 1;
                 } else {
                     options |= RGXG_NOUPPERCASE;
+                }
+                break;
+            case 'm':
+                min_length = strtol(optarg, NULL, 10);
+                if (min_length < 0 || min_length > INT_MAX) {
+                    fprintf (stderr, "rgxg range: invalid minimum length: %s (The minimum length must be a positive number lesser than or equal to %d).\n", optarg, INT_MAX);
+                    cont = 0;
+                    exit_status = 1;
                 }
                 break;
             case 'U':
@@ -184,9 +197,9 @@ int range_argv_parse (int argc, char **argv) {
 int range_generate_regex (char * regex) {
     int n;
     if (last < 0) {
-        n = rgxg_number_greaterequal(first, base, regex, options);
+        n = rgxg_number_greaterequal(first, base, min_length, regex, options);
     } else {
-        n = rgxg_number_range(first, last, base, regex, options);
+        n = rgxg_number_range(first, last, base, min_length, regex, options);
     }
     switch (n) {
         /* RGXG_ERROR_BASE, RGXG_ERROR_NEGARG handled in range_argv_parse */

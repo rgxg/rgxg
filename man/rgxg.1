@@ -1,4 +1,4 @@
-.TH RGXG 1 "Feb 26, 2013" "" "User Commands"
+.TH RGXG 1 "Mar 25, 2013" "" "User Commands"
 .SH "NAME"
 rgxg \- ReGular eXpression Generator
 .SH "SYNOPSIS"
@@ -67,6 +67,12 @@ Display help and exit.
 Only match numbers with leading zeros. By default leading zeros are not
 matched. The number of leading zeros depends on the length of the given
 LAST number.
+
+.TP
+\-m \fILENGTH\fR
+with \fB\-z\fR, only match numbers with a minimum length LENGTH. If
+LENGTH is lesser than or equal to the length of the given LAST number
+this option has no effect.
 .RE
 
 .B Examples
@@ -117,6 +123,14 @@ Match 00 to 31:
 .nf
 $ rgxg range \-z 0 31
 (3[01]|[0-2][0-9])
+.fi
+.RE
+
+Match 0000 to 0031:
+.RS 3
+.nf
+$ rgxg range \-z \-m 4 0 31
+(003[01]|00[0-2][0-9])
 .fi
 .RE
 
