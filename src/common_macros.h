@@ -54,4 +54,16 @@ default: /* case '?' || ':' */ \
     command##_print_help(); \
     exit_status = 1;
 
+#define EASY_MUTEX_OPTION(command, char, mutex_char, option, mutex_option) \
+case char: \
+    if (options&mutex_option) { \
+        fprintf (stderr, "rgxg "#command": you cannot specify -%c and -%c option at the same time.\n", char, mutex_char); \
+        exit_status = 1; \
+        cont = 0; \
+    } else { \
+        options |= option; \
+    } \
+    break;
+
+
 #endif /* _COMMON_MACROS_H_INCLUDED */

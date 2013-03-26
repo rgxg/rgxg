@@ -1,4 +1,4 @@
-.TH RGXG 1 "Mar 25, 2013" "" "User Commands"
+.TH RGXG 1 "Mar 26, 2013" "" "User Commands"
 .SH "NAME"
 rgxg \- ReGular eXpression Generator
 .SH "SYNOPSIS"
@@ -64,15 +64,21 @@ Display help and exit.
 
 .TP
 \-z
-Only match numbers with leading zeros. By default leading zeros are not
-matched. The number of leading zeros depends on the length of the given
-LAST number.
+Only match numbers with leading zeros. By default the number of leading
+zeros depends on the length of the given LAST number (see also
+\fB\-m\fR). The default is to not match numbers with leading zeros.
+
+.TP
+\-Z
+Match numbers with a variable number of leading zeros. By default the
+maximum number of leading zeros depends on the length of the given LAST
+number (see also \fB\-m\fR).
 
 .TP
 \-m \fILENGTH\fR
-with \fB\-z\fR, only match numbers with a minimum length LENGTH. If
-LENGTH is lesser than or equal to the length of the given LAST number
-this option has no effect.
+with \fB\-z\fR or \fB\-Z\fR, only match numbers with a minimum length
+LENGTH. If LENGTH is lesser than or equal to the length of the given
+LAST number this option has no effect.
 .RE
 
 .B Examples
@@ -131,6 +137,14 @@ Match 0000 to 0031:
 .nf
 $ rgxg range \-z \-m 4 0 31
 (003[01]|00[0-2][0-9])
+.fi
+.RE
+
+Match 0 to 31 and 00 to 31 and 000 to 031:
+.RS 3
+.nf
+$ rgxg range \-Z \-m 3 0 31
+(0?3[01]|0?[0-2]?[0-9])
 .fi
 .RE
 

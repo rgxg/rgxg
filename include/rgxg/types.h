@@ -31,6 +31,7 @@ typedef long rgxg_options_t;
 #define RGXG_NOLOWERCASE                (1L<<1)
 #define RGXG_NOOUTERPARENS              (1L<<2)
 #define RGXG_LEADINGZERO                (1L<<3)
+#define RGXG_VARLEADINGZERO             (1L<<4)
 
 #define RGXG_ERROR_RANGE                (-1)
 #define RGXG_ERROR_BASE                 (-2)

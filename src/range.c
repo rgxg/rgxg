@@ -30,6 +30,8 @@
 /* needed for rgxg_number* */
 #include "rgxg/number.h"
 
+#include "common_macros.h"
+
 /* needed for atoi, strtoll */
 #include <stdlib.h>
 
@@ -75,7 +77,8 @@ void range_print_help () {
         "    -U         only match upper case letters\n"
         "    -h         display this help message\n"
         "    -z         only match numbers with leading zeros\n"
-        "    -m LENGTH  with -z, only match numbers with a minimum length LENGTH\n"
+        "    -Z         match numbers with a variable number of leading zeros\n"
+        "    -m LENGTH  with -z or -Z, only match numbers with a minimum length LENGTH\n"
         "\n"
     );
 }
@@ -100,28 +103,15 @@ case option: \
 int range_argv_parse (int argc, char **argv) {
     int cont = 1;
     int c;
-    while (cont && (c = getopt (argc, argv, ":b:hm:zNUl")) != -1)
+    while (cont && (c = getopt (argc, argv, ":b:hm:zNUlZ")) != -1)
         switch (c) {
-            case 'h':
-                range_print_help();
-                cont = 0;
-                break;
-            case 'N':
-                options |= RGXG_NOOUTERPARENS;
-                break;
-            EASY_BASE_PARSE('b', base);
-            case 'z':
-                options |= RGXG_LEADINGZERO;
-                break;
-            case 'l':
-                if (options&RGXG_NOLOWERCASE) {
-                    fprintf (stderr, "rgxg range: you cannot specify -l and -U option at the same time.\n");
-                    cont = 0;
-                    exit_status = 1;
-                } else {
-                    options |= RGXG_NOUPPERCASE;
-                }
-                break;
+            EASY_HELP_OPTION(range)
+            EASY_NOOUTERPARENS_OPTION
+            EASY_BASE_PARSE('b', base)
+            EASY_MUTEX_OPTION(range, 'z', 'Z', RGXG_LEADINGZERO, RGXG_VARLEADINGZERO)
+            EASY_MUTEX_OPTION(range, 'Z', 'z', RGXG_VARLEADINGZERO, RGXG_LEADINGZERO)
+            EASY_MUTEX_OPTION(range, 'l', 'U', RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
+            EASY_MUTEX_OPTION(range, 'U', 'l', RGXG_NOLOWERCASE, RGXG_NOUPPERCASE)
             case 'm':
                 min_length = strtol(optarg, NULL, 10);
                 if (min_length < 0 || min_length > INT_MAX) {
@@ -130,26 +120,7 @@ int range_argv_parse (int argc, char **argv) {
                     exit_status = 1;
                 }
                 break;
-            case 'U':
-                if (options&RGXG_NOUPPERCASE) {
-                    fprintf (stderr, "rgxg range: you cannot specify -l and -U option at the same time.\n");
-                    cont = 0;
-                    exit_status = 1;
-                } else {
-                    options |= RGXG_NOLOWERCASE;
-                }
-                break;
-            default: /* case '?' or ':' */
-                if (c == ':' ) {
-                    fprintf (stderr, "rgxg range: option -%c requires an argument.\n", optopt);
-                } else if (isprint (optopt)) {
-                    fprintf (stderr, "rgxg range: unknown option `-%c'.\n", optopt);
-                } else {
-                    fprintf (stderr, "rgxg range: unknown option character `\\x%x'.\n", optopt);
-                }
-                cont = 0;
-                range_print_help();
-                exit_status = 1;
+            EASY_DEFAULT(range)
         }
     if (cont) {
         optind++; /* skip command string */

@@ -1,3 +1,11 @@
+2013-03-26	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/types.h, lib/number.c, src/common_macros.h,
+	  src/range.c, man/rgxg.1:
+	  - common_macros.h: added 'EASY_MUTEX_OPTION' macro
+	  - range.c: use 'src/common_macros.h'
+	  - added 'RGXG_VARLEADINGZERO' option
+	  - added '-Z' option to 'range' command
+
 2013-03-25	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/number.h, src/range.h:
 	  - added missing 'extern' keyword to function declarations

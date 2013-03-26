@@ -192,7 +192,7 @@ int rgxg_number_range(long long first, long long last, int base, int
     EASY_IF_ERROR_ELSE(first > last , RGXG_ERROR_RANGE) {
         n = 0;
         parenthesis = 0;
-        if (RGXG_LEADINGZERO&options) {
+        if ((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) {
             max_num_of_digits = rgxg_number_of_digits_long_long(last, base);
             if (max_num_of_digits < min_length) {
                 max_num_of_digits = min_length;
@@ -212,13 +212,13 @@ int rgxg_number_range(long long first, long long last, int base, int
                 prefix = current_last/base;
                 prefix_range_first =
                     prefix*rgxg_power(base,max+1)+!prefix*rgxg_power(base,max) > first
-                    ? (((RGXG_LEADINGZERO&options) && first == 0) ? 0 : !prefix)
+                    ? ((((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) && first == 0) ? 0 : !prefix)
                     : first/rgxg_power(base,max)%base+(prefix*rgxg_power(base,max+1)+(first/rgxg_power(base,max)%base)*rgxg_power(base,max) != first);
                 prefix_range_last = current_last%base;
             }
             current_last = prefix*rgxg_power(base,max+1)+ prefix_range_first*rgxg_power(base,max);
             min = max;
-            if (max && prefix_range_first == 1 && prefix_range_last == base-1 && !(RGXG_LEADINGZERO&options)) {
+            if (max && prefix_range_first == 1 && prefix_range_last == base-1 && !((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options)) {
                 while (current_last/base && current_last/base >= first) {
                     min--;
                     current_last /= base;
@@ -235,15 +235,20 @@ int rgxg_number_range(long long first, long long last, int base, int
                 }
             }
 
-            if (RGXG_LEADINGZERO&options) {
+            if ((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) {
                 number_of_leading_zeros = max_num_of_digits-(prefix ? rgxg_number_of_digits_long_long(prefix, base): 0)-max-1;
-                if (number_of_leading_zeros < 5) { /* 0000000000 -> 0{10} but 0000 -> 0000 */
+                if ( number_of_leading_zeros < ((RGXG_LEADINGZERO&options) ? 5 : 4)) { /* 0000000000 -> 0{10} (0?0?0?0? -> 0{0,4}) but 0000 -> 0000 (0?0?0? -> 0?0?0?) */
                     while (number_of_leading_zeros-- > 0) {
                         EASY_CHAR('0');
+                        if (RGXG_VARLEADINGZERO&options) { EASY_CHAR('?'); }
                     }
                 } else {
                     EASY_CHAR('0');
                     EASY_CHAR('{');
+                    if (RGXG_VARLEADINGZERO&options) {
+                        n += rgxg_number(0, 10, (regex ? regex+n : NULL), 0);
+                        EASY_CHAR(',');
+                    }
                     n += rgxg_number(number_of_leading_zeros, 10, (regex ? regex+n : NULL), 0);
                     EASY_CHAR('}');
                 }
@@ -265,6 +270,13 @@ int rgxg_number_range(long long first, long long last, int base, int
                     EASY_BASE32_RANGE_ASSIGNMENT(0, base-1);
                     current_last = -1;
                 } else {
+                    if ((RGXG_VARLEADINGZERO&options) && first == 0 &&
+                            prefix == 0 && prefix_range_first == 0) {
+                        if( prefix_range_last != base -1) {
+                            EASY_CHAR('?');
+                        }
+                        min = 1;
+                    }
                     EASY_BASE32_RANGE_ASSIGNMENT(0, base-1);
                     if (max == 1 && min == 0) { /* 5[0-9]{0,1} => 5[0-9]? */
                         EASY_CHAR('?');
@@ -299,12 +311,12 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
     EASY_IF_ERROR_ELSE(number > rgxg_power(base, rgxg_number_of_digits_long_long(limits[base], base)), RGXG_ERROR_ARG2BIG) {
         n = 0;
         count = rgxg_number_of_digits_long_long(number ,base);
-        if (RGXG_LEADINGZERO&options && min_length > count+1) {
+        if ((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options && min_length > count+1) {
             count = min_length-1;
         }
 
         boundary = rgxg_power(base,count-1);
-        no_power_of_base = (number != boundary) || RGXG_LEADINGZERO&options; /* ([1-9][0-9]{3,}|[1-9][0-9]{2}) => [1-9][0-9]{2,}  but ([1-9][0-9]+|0[1-9]) => ([1-9][0-9]+|0[1-9]) */
+        no_power_of_base = (number != boundary) || (RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options; /* ([1-9][0-9]{3,}|[1-9][0-9]{2}) => [1-9][0-9]{2,}  but ([1-9][0-9]+|0[1-9]) => ([1-9][0-9]+|0[1-9]) */
 
         if (!(RGXG_NOOUTERPARENS&options) && no_power_of_base) {
             EASY_CHAR('(');
