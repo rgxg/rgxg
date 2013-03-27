@@ -1,3 +1,9 @@
+2013-03-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/types.h, +include/rgxg/net.h, +lib/net.c, Makefile.am:
+	  - provide 'rgxg_net_cidr_ipv4' function
+	  - provide 'rgxg_net_cidr_ipv6' function
+	  - provide 'rgxg_net_cidr_string' function
+
 2013-03-26	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/number.c, src/common_macros.h,
 	  src/range.c, man/rgxg.1:

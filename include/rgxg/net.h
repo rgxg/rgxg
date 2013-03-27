@@ -22,23 +22,30 @@
  *     distribution.
  */
 
-#ifndef _RGXG_TYPES_H_INCLUDED
-#define _RGXG_TYPES_H_INCLUDED
+#ifndef _RGXG_NET_H_INCLUDED
+#define _RGXG_NET_H_INCLUDED
 
-typedef long rgxg_options_t;
+/* needed for rgxg_options_t */
+#include "types.h"
 
-#define RGXG_NOUPPERCASE                (1L<<0)
-#define RGXG_NOLOWERCASE                (1L<<1)
-#define RGXG_NOOUTERPARENS              (1L<<2)
-#define RGXG_LEADINGZERO                (1L<<3)
-#define RGXG_VARLEADINGZERO             (1L<<4)
-#define RGXG_NOZEROCOMPRESSION          (1L<<5)
+/* needed for uint8_t, uint16_t */
+#include <inttypes.h>
 
-#define RGXG_ERROR_RANGE                (-1)
-#define RGXG_ERROR_BASE                 (-2)
-#define RGXG_ERROR_NEGARG               (-3)
-#define RGXG_ERROR_ARG2BIG              (-4)
-#define RGXG_ERROR_SYNTAX               (-5)
-#define RGXG_ERROR_PREFIX               (-6)
+typedef struct ipv4_s {
+    uint8_t octet[4];
+} ipv4_t;
 
-#endif /* _RGXG_TYPES_H_INCLUDED */
+typedef struct ipv6_s {
+    uint16_t hextet[8];
+} ipv6_t;
+
+extern int rgxg_net_cidr_ipv4 (ipv4_t *address, int prefix, char *regex,
+        rgxg_options_t options);
+
+extern int rgxg_net_cidr_ipv6 (ipv6_t *address, int prefix, char *regex,
+        rgxg_options_t options);
+
+extern int rgxg_net_cidr_string (char *cidr, char *regex,
+        rgxg_options_t options);
+
+#endif /* _RGXG_NET_H_INCLUDED */
