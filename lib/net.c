@@ -52,7 +52,7 @@ int rgxg_net_cidr_ipv4 (ipv4_t *address, int prefix, char *regex,
         for (i = 0; i < 4; ++i) {
             bits = i*8;
             mask = ~( (prefix ? (1 <<
-            (prefix < bits ? 8 : prefix > (bits+8) ? 0 : (bits+8) % prefix)
+            (prefix <= bits ? 8 : (prefix > (bits+8) ? 0 : (bits+8)-prefix))
                             ) : 0) - 1);
             first.octet[i] = (address->octet[i])&mask;
             last.octet[i] = (address->octet[i])|~mask;
@@ -99,7 +99,7 @@ int rgxg_net_cidr_ipv6 (ipv6_t *address, int prefix, char *regex,
         for (i = 0; i < 8; ++i) {
             bits = i*16;
             mask = ~( (prefix ? (1 <<
-            (prefix < bits ? 16 : prefix > (bits+16) ? 0 : (bits+16) % prefix)
+            (prefix <= bits ? 16 : (prefix > (bits+16) ? 0 : (bits+16)-prefix))
                             ) : 0) - 1);
             first.hextet[i] = (address->hextet[i])&mask;
             last.hextet[i] = (address->hextet[i])|~mask;
@@ -210,7 +210,7 @@ int rgxg_net_cidr_string (char *cidr, char *regex,
         if (start_of_zero_section >= 0) {
             /* move hextets behind the zero section at the end and fill the gap with zeros */
             int length = 8 - i;
-            for (i = 8; i >= start_of_zero_section; --i) {
+            for (i = 7; i >= start_of_zero_section; --i) {
                 address.hextet[i] = ((i-length) < start_of_zero_section) ? 0 : address.hextet[i-length];
             }
         }

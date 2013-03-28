@@ -2,6 +2,9 @@
 	* src/common_macros.h, +src/cidr.h, +src/cidr.c, src/main.c, Makefile.am:
 	  - common_macros.h: added 'EASY_ERROR' macro
 	  - provide 'cidr' command
+	* lib/net.c:
+	  - fixed bug in mask calculation
+	  - fixed off-the-end error
 
 2013-03-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, +include/rgxg/net.h, +lib/net.c, Makefile.am:
