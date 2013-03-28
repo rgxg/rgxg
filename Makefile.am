@@ -13,6 +13,7 @@ bin_PROGRAMS = rgxg
 rgxg_SOURCES = src/main.c src/rgxg.h \
 			   src/common_macros.h \
 			   src/alternation.h src/alternation.c \
+			   src/cidr.h src/cidr.c \
 			   src/escape.h src/escape.c \
 			   src/range.h src/range.c
 rgxg_CFLAGS = -I$(top_srcdir)/include

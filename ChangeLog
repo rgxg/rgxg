@@ -1,3 +1,8 @@
+2013-03-28	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/common_macros.h, +src/cidr.h, +src/cidr.c, src/main.c, Makefile.am:
+	  - common_macros.h: added 'EASY_ERROR' macro
+	  - provide 'cidr' command
+
 2013-03-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, +include/rgxg/net.h, +lib/net.c, Makefile.am:
 	  - provide 'rgxg_net_cidr_ipv4' function

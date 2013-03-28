@@ -28,6 +28,7 @@
 #include "alternation.h"
 #include "escape.h"
 #include "range.h"
+#include "cidr.h"
 
 /* needed for malloc, free */
 #include <stdlib.h>
@@ -56,6 +57,7 @@ typedef struct module_s {
 
 module_t modules[] = {
     EASY_MODULE(alternation,    "Create regex that matches any of the given patterns"),
+    EASY_MODULE(cidr,           "Create regex that matches all addresses of the given CIDR block"),
     EASY_MODULE(escape,         "Escape the given string for use in a regex"),
     EASY_MODULE(range,          "Create regex that matches integers in a given range")
 };

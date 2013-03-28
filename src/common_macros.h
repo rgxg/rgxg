@@ -28,6 +28,10 @@
 /* needed for isprint */
 #include <ctype.h>
 
+#define EASY_ERROR(command, format, ...) \
+fprintf (stderr, "rgxg "#command": "#format"\n", __VA_ARGS__); \
+exit_status = 1;
+
 #define EASY_HELP_OPTION(command) \
 case 'h': \
     command##_print_help(); \
@@ -57,8 +61,7 @@ default: /* case '?' || ':' */ \
 #define EASY_MUTEX_OPTION(command, char, mutex_char, option, mutex_option) \
 case char: \
     if (options&mutex_option) { \
-        fprintf (stderr, "rgxg "#command": you cannot specify -%c and -%c option at the same time.\n", char, mutex_char); \
-        exit_status = 1; \
+        EASY_ERROR(command, you cannot specify -%c and -%c at the same time, char, mutex_char) \
         cont = 0; \
     } else { \
         options |= option; \
