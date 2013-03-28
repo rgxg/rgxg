@@ -1,4 +1,4 @@
-.TH RGXG 1 "Mar 26, 2013" "" "User Commands"
+.TH RGXG 1 "Mar 28, 2013" "" "User Commands"
 .SH "NAME"
 rgxg \- ReGular eXpression Generator
 .SH "SYNOPSIS"
@@ -11,9 +11,150 @@ rgxg \- ReGular eXpression Generator
 is a generator for (extended) regular expressions.
 
 For instance it is useful to generate a regular expression to exactly
-match a numeric range.
+match a numeric range or all addresses of a given CIDR block.
 
 .SH "COMMANDS"
+.PP
+.B alternation
+.RB [options]
+.RI [PATTERN...]
+
+.RS 4
+Generate a regular expression that matches any of the given patterns.
+
+.B Options
+.RS 3
+.TP
+\-N
+Omit the outer parentheses, if any, of the regular expression. This
+option can be useful if the generated regular expression is used within
+another alternation.
+
+.TP
+\-h
+Display help and exit.
+
+.RE
+
+.B Examples
+.RS 3
+
+Match either lion, elephant, rhino, buffalo or leopard:
+.RS 3
+.nf
+$ rgxg alternation lion elephant rhino buffalo leopard
+(lion|elephant|rhino|buffalo|leopard)
+.fi
+.RE
+
+.RE
+
+.RE
+
+
+.PP
+.B cidr
+.RB [options]
+.RI CIDR
+
+.RS 4
+Generate a regular expression that matches all addresses of the given CIDR
+block. Both IPv4 and IPv6 CIDR blocks are supported.
+
+NOTE: The third form of text representation of IPv6 addresses (mentioned in
+section 2.2 of RFC 4291) is not supported at the moment.
+
+.B Options
+.RS 3
+.TP
+\-N
+Omit the outer parentheses, if any, of the regular expression. This
+option can be useful if the generated regular expression is used within
+another alternation.
+
+.TP
+\-l
+Match only IPv6 addresses with lower case letters. By default both lower and
+upper case letters are matched.
+
+.TP
+\-U
+Match only IPv6 addresses with upper case letters. By default both lower and
+upper case letters are matched.
+
+.TP
+\-u
+Do not match IPv6 addresses with zero compression.
+
+.TP
+\-h
+Display help and exit.
+
+.RE
+
+.B Examples
+.RS 3
+
+Match 192.168.0.0/24:
+.RS 3
+.nf
+$ rgxg cidr 192.168.0.0/24
+192\.168\.0\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])
+.fi
+.RE
+
+Match 2001:db8:aaaa:bbbb:cccc:dddd::/96 limited to lower case letters:
+.RS 3
+.nf
+$ rgxg cidr \-l 2001:db8:aaaa:bbbb:cccc:dddd::/96
+2001:0?db8:aaaa:bbbb:cccc:dddd:(:([0-9a-f]{1,4})?|[0-9a-f]{1,4}:(:|[0-9a-f]{1,4}))
+.fi
+
+.RE
+Match 2001:1890:1112::/48 restricted to standard notation:
+.RS 3
+.nf
+$ rgxg cidr \-u 2001:1890:1112::/48
+2001:1890:1112:([0-9A-Fa-f]{1,4}:){4}[0-9A-Fa-f]{1,4}
+.fi
+.RE
+
+.RE
+
+.RE
+
+
+.PP
+.B escape
+.RB [options]
+.RI STRING
+
+.RS 4
+Generate the regular expression which matches the given string by escaping the escape characters.
+
+.B Options
+.RS 3
+.TP
+\-h
+Display help and exit.
+
+.RE
+
+.B Examples
+.RS 3
+
+Match '1+(2*(3-4))':
+.RS 3
+.nf
+$ rgxg escape 1+(2*(3\-4))
+1\\+\\(2\\*\\(3\-4\\)\\)
+.fi
+.RE
+
+.RE
+
+.RE
+
 .PP
 .B help
 .RB [COMANND]

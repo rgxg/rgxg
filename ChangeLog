@@ -5,6 +5,8 @@
 	* lib/net.c:
 	  - fixed bug in mask calculation
 	  - fixed off-the-end error
+	* man/rgxg.1:
+	  - document 'alternation', 'escape' and 'cidr' command
 
 2013-03-27	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, +include/rgxg/net.h, +lib/net.c, Makefile.am:
