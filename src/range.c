@@ -103,6 +103,7 @@ case option: \
 int range_argv_parse (int argc, char **argv) {
     int cont = 1;
     int c;
+    char *ptr;
     while (cont && (c = getopt (argc, argv, ":b:hm:zNUlZ")) != -1)
         switch (c) {
             EASY_HELP_OPTION(range)
@@ -113,8 +114,8 @@ int range_argv_parse (int argc, char **argv) {
             EASY_MUTEX_OPTION(range, 'l', 'U', RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
             EASY_MUTEX_OPTION(range, 'U', 'l', RGXG_NOLOWERCASE, RGXG_NOUPPERCASE)
             case 'm':
-                min_length = strtol(optarg, NULL, 10);
-                if (min_length < 0 || min_length > INT_MAX) {
+                min_length = strtol(optarg, &ptr, 10);
+                if (min_length < 0 || min_length > INT_MAX || *ptr != '\0') {
                     fprintf (stderr, "rgxg range: invalid minimum length: %s (The minimum length must be a positive number lesser than or equal to %d).\n", optarg, INT_MAX);
                     cont = 0;
                     exit_status = 1;

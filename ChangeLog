@@ -1,3 +1,6 @@
+2013-03-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* src/range.c: fixed parsing of LENGTH value
+
 2013-03-28	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* src/common_macros.h, +src/cidr.h, +src/cidr.c, src/main.c, Makefile.am:
 	  - common_macros.h: added 'EASY_ERROR' macro
