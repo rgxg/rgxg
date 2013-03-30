@@ -87,20 +87,29 @@ int cidr_argv_parse (int argc, char **argv) {
 }
 
 int cidr_generate_regex (char * regex) {
-    int n;
-       n = rgxg_net_cidr_string(cidr, regex, options);
+    int n, position;
+    char *ptr;
+    n = rgxg_net_cidr_string(cidr, &ptr, regex, options);
+    if (n >= 0 && *ptr != '\0') {
+        n = RGXG_ERROR_SYNTAX;
+    }
+    position = (ptr-cidr)+1;
     switch (n) {
         case RGXG_ERROR_ARG2BIG:
             EASY_ERROR(cidr, syntax error: octet/hextet too big: %s, cidr)
+            fprintf(stderr, "%*c\n", 47+position, '^');
             break;
         case RGXG_ERROR_NEGARG:
             EASY_ERROR(cidr, syntax error: negative octet/hextet: %s, cidr)
+            fprintf(stderr, "%*c\n", 49+position, '^');
             break;
         case RGXG_ERROR_SYNTAX:
             EASY_ERROR(cidr, syntax error in CIDR block: %s, cidr)
+            fprintf(stderr, "%*c\n", 39+position, '^');
             break;
         case RGXG_ERROR_PREFIX:
-            EASY_ERROR(cidr, invalid network identifier in CIDR block : %s, cidr)
+            EASY_ERROR(cidr, invalid network identifier in CIDR block: %s, cidr)
+            fprintf(stderr, "%*c\n", 53+position, '^');
             break;
     }
     return n;

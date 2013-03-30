@@ -1,3 +1,11 @@
+2013-03-30	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/net.h, lib/net.c, src/cidr.c:
+	  - added missing 'const' keyword to 'address' parameter
+	  - added missing 'const' keyword to 'cidr' parameter
+	  - added 'endptr' parameter to 'rgxg_net_cidr_string' function
+	  - fixed error handling in 'rgxg_net_cidr_string' function
+	  - cidr.c: adjusted error output
+
 2013-03-29	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* src/range.c: fixed parsing of LENGTH value
 

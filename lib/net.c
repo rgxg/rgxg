@@ -39,7 +39,7 @@
 /* needed for uint8_t, uint16_t */
 #include <inttypes.h>
 
-int rgxg_net_cidr_ipv4 (ipv4_t *address, int prefix, char *regex,
+int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
         rgxg_options_t options) {
     if (prefix < 0 || prefix > 32) {
         return RGXG_ERROR_PREFIX;
@@ -86,7 +86,7 @@ int rgxg_net_cidr_ipv4 (ipv4_t *address, int prefix, char *regex,
     }
 }
 
-int rgxg_net_cidr_ipv6 (ipv6_t *address, int prefix, char *regex,
+int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
         rgxg_options_t options) {
     if (prefix < 0 || prefix > 128) {
         return RGXG_ERROR_PREFIX;
@@ -173,7 +173,11 @@ int rgxg_net_cidr_ipv6 (ipv6_t *address, int prefix, char *regex,
     }
 }
 
-int rgxg_net_cidr_string (char *cidr, char *regex,
+#define EASY_RETURN(return_value, ptr) \
+    if (endptr != NULL) { *endptr = (char *) ptr; } \
+    return return_value;
+
+int rgxg_net_cidr_string (const char *cidr, char** endptr, char *regex,
         rgxg_options_t options) {
     int n, i;
     char *ptr;
@@ -187,24 +191,30 @@ int rgxg_net_cidr_string (char *cidr, char *regex,
         ipv6_t address;
         int start_of_zero_section = -1;
         do {
+            if (cidr[1] == 'x') {
+                EASY_RETURN(RGXG_ERROR_SYNTAX, cidr+1);
+            }
             value = strtol(cidr, &ptr, 16);
             if (value > 65535 || value < 0) {
-                return value < 0 ? RGXG_ERROR_NEGARG : RGXG_ERROR_ARG2BIG;
+                EASY_RETURN(value < 0 ? RGXG_ERROR_NEGARG : RGXG_ERROR_ARG2BIG, cidr)
             } else if (value == 0 && cidr == ptr) {
                 if (start_of_zero_section < 0 && *ptr == ':') { /* no double zero sections */
                     start_of_zero_section = i;
                     if (i == 0 || i == 7) {
                         ptr++; /* skip 2nd ':' at the beginning/end */
                         if (*ptr != (i == 0 ? ':' : '/')) { /* force 2nd : at the beginning/end */
-                            return RGXG_ERROR_SYNTAX;
+                            EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
                         }
                     }
                 } else if (*ptr != '/') {
-                    return RGXG_ERROR_SYNTAX;
+                    EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
                 }
-            } else {
+            } else if (*(ptr+1) != '/' && (start_of_zero_section < 0 || i < 6 )) {
                 address.hextet[i++] = value;
+            } else {
+                EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
             }
+
             cidr = ptr+1;
         } while (*ptr == ':' && i < 8);
         if (start_of_zero_section >= 0) {
@@ -216,34 +226,40 @@ int rgxg_net_cidr_string (char *cidr, char *regex,
         }
         if (*ptr == '/' && (start_of_zero_section >= 0 || i == 8)) {
             prefix = strtol(cidr, &ptr, 10);
-            if ((prefix > 128 || prefix < 0) || (prefix == 0 && cidr == ptr)) {
-                return RGXG_ERROR_PREFIX;
+            if (prefix > 128 || prefix < 0) {
+                EASY_RETURN(RGXG_ERROR_PREFIX, cidr)
+            } else if (prefix == 0 && cidr == ptr) {
+                EASY_RETURN(RGXG_ERROR_SYNTAX, cidr)
             }
         } else {
-            return RGXG_ERROR_SYNTAX;
+            EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
         }
         n = rgxg_net_cidr_ipv6 (&address, prefix, regex, options);
     } else { /* IPV4 address */
         ipv4_t address;
         do {
             value = strtol(cidr, &ptr, 10);
-            if ((value > 255 || value < 0) || (value == 0 && cidr == ptr)) {
-                return value < 0 ? RGXG_ERROR_NEGARG : RGXG_ERROR_ARG2BIG;
-            } else {
+            if (value > 255 || value < 0) {
+                  EASY_RETURN(value < 0 ? RGXG_ERROR_NEGARG : RGXG_ERROR_ARG2BIG, cidr)
+              } else if (value == 0 && cidr == ptr) {
+                  EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
+              } else {
                 address.octet[i++] = value;
             }
             cidr = ptr+1;
         } while (*ptr == '.' && i < 4);
         if (*ptr == '/' && i == 4) {
             prefix = strtol(cidr, &ptr, 10);
-            if ((prefix > 32 || prefix < 0) || (prefix == 0 && cidr == ptr)) {
-                return RGXG_ERROR_PREFIX;
+            if (prefix > 32 || prefix < 0) {
+                EASY_RETURN(RGXG_ERROR_PREFIX, cidr)
+            } else if (prefix == 0 && cidr == ptr) {
+                EASY_RETURN(RGXG_ERROR_SYNTAX, cidr)
             }
         } else {
-            return RGXG_ERROR_SYNTAX;
+            EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
         }
         n = rgxg_net_cidr_ipv4 (&address, prefix, regex, 0);
     }
 
-    return n;
+    EASY_RETURN(n, ptr)
 }
