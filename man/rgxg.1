@@ -1,4 +1,4 @@
-.TH RGXG 1 "Mar 28, 2013" "" "User Commands"
+.TH RGXG 1 "Apr 04, 2013" "" "User Commands"
 .SH "NAME"
 rgxg \- ReGular eXpression Generator
 .SH "SYNOPSIS"
@@ -61,9 +61,6 @@ $ rgxg alternation lion elephant rhino buffalo leopard
 Generate a regular expression that matches all addresses of the given CIDR
 block. Both IPv4 and IPv6 CIDR blocks are supported.
 
-NOTE: The third form of text representation of IPv6 addresses (mentioned in
-section 2.2 of RFC 4291) is not supported at the moment.
-
 .B Options
 .RS 3
 .TP
@@ -84,7 +81,13 @@ upper case letters are matched.
 
 .TP
 \-u
-Do not match IPv6 addresses with zero compression.
+Do not match IPv6 addresses with zero compression (second form of text
+representation of IPv6 addresses mentioned in section 2.2 of RFC 4291).
+
+.TP
+\-s
+Do not match IPv6 addresses with mixed notation (third form of text
+representation of IPv6 addresses mentioned in section 2.2 of RFC 4291).
 
 .TP
 \-h
@@ -106,16 +109,16 @@ $ rgxg cidr 192.168.0.0/24
 Match 2001:db8:aaaa:bbbb:cccc:dddd::/96 limited to lower case letters:
 .RS 3
 .nf
-$ rgxg cidr \-l 2001:db8:aaaa:bbbb:cccc:dddd::/96
-2001:0?db8:aaaa:bbbb:cccc:dddd:(:([0-9a-f]{1,4})?|[0-9a-f]{1,4}:(:|[0-9a-f]{1,4}))
+$ rgxg cidr \-l 2001:db8:aaaa:bbbb:cccc:dddd::/112
+2001:0?db8:aaaa:bbbb:cccc:dddd((::|::[0-9a-f]{1,4}|:0?0?0?0(::|:[0-9a-f]{1,4}))|:0\.0(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){2})
 .fi
 
 .RE
-Match 2001:1890:1112::/48 restricted to standard notation:
+Match 2001:1890:1112::/48 restricted to uncompressed standard notation:
 .RS 3
 .nf
-$ rgxg cidr \-u 2001:1890:1112::/48
-2001:1890:1112:([0-9A-Fa-f]{1,4}:){4}[0-9A-Fa-f]{1,4}
+$ rgxg cidr \-u \-s 2001:1890:1112::/48
+2001:1890:1112(:[0-9A-Fa-f]{1,4}){5}
 .fi
 .RE
 
@@ -171,7 +174,7 @@ Describe the usage of rgxg or the given COMMAND.
 .RB [LAST]
 
 .RS 4
-Generate a regular expression which matches the number range between FIRST and
+Generate a regular expression that matches the number range between FIRST and
 LAST. If LAST is omitted the regular expression matches all numbers which are
 greater than or equal FIRST. The numbers must be positive and given in base-10
 notation.

@@ -50,6 +50,7 @@ void cidr_print_help () {
         "Usage: rgxg cidr [options] CIDR\n\n"
         "    -h         display this help message\n"
         "    -u         do not match IPv6 addresses with zero compression\n"
+        "    -s         do not match IPv6 addresses with mixed notation\n"
         "    -l         only match IPv6 addresses with lower case letters\n"
         "    -U         only match IPv6 addresses with upper case letters\n"
         "    -N         omit the outer parentheses, if any\n"
@@ -65,10 +66,11 @@ void cidr_set_defaults () {
 int cidr_argv_parse (int argc, char **argv) {
     int cont = 1;
     int c;
-    while (cont && (c = getopt (argc, argv, "hluUN")) != -1)
+    while (cont && (c = getopt (argc, argv, "hlsuUN")) != -1)
         switch (c) {
             EASY_HELP_OPTION(cidr)
             EASY_OPTION('u', RGXG_NOZEROCOMPRESSION)
+            EASY_OPTION('s', RGXG_NOMIXEDNOTATION)
             EASY_NOOUTERPARENS_OPTION
             EASY_MUTEX_OPTION(cidr, 'l', 'U', RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
             EASY_MUTEX_OPTION(cidr, 'U', 'l', RGXG_NOLOWERCASE, RGXG_NOUPPERCASE)
