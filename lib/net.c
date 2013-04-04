@@ -41,6 +41,7 @@
 
 int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
         rgxg_options_t options) {
+
     if (prefix < 0 || prefix > 32) {
         return RGXG_ERROR_PREFIX;
     } else {
@@ -88,6 +89,8 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
 
 int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
         rgxg_options_t options) {
+
+    EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
     if (prefix < 0 || prefix > 128) {
         return RGXG_ERROR_PREFIX;
     } else {

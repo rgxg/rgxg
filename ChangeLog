@@ -6,6 +6,8 @@
 	  - fixed several bugs with IPv6 parsing
 	  - fixed several bugs with IPv6 regex generation
 	  - optimized IPv4 and IPv6 regex generation
+	* include/rgxg/types.h, lib/common_macros.h, lib/net.c, lib/number.c:
+	  - added 'RGXG_ERROR_MUTEXOPTIONS' error
 
 2013-03-30	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/net.h, lib/net.c, src/cidr.c:

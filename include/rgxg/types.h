@@ -41,5 +41,6 @@ typedef long rgxg_options_t;
 #define RGXG_ERROR_ARG2BIG              (-4)
 #define RGXG_ERROR_SYNTAX               (-5)
 #define RGXG_ERROR_PREFIX               (-6)
+#define RGXG_ERROR_MUTEXOPTIONS         (-7)
 
 #endif /* _RGXG_TYPES_H_INCLUDED */

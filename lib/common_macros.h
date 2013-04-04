@@ -25,8 +25,14 @@
 #ifndef _COMMON_MACROS_H_INCLUDED
 #define _COMMON_MACROS_H_INCLUDED
 
+/* needed for RGXG_ERROR_MUTEXOPTIONS */
+#include "rgxg/types.h"
+
 #define EASY_CHAR(char) \
     if (regex) { regex[n] = char; } \
     n++;
+
+#define EASY_VALIDATE_MUTEXOPTIONS(optiion1, option2) \
+    if ((optiion1&options) && (option2&options)) { return RGXG_ERROR_MUTEXOPTIONS; }
 
 #endif /* _COMMON_MACROS_H_INCLUDED */

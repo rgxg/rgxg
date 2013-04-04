@@ -148,6 +148,7 @@ int rgxg_number(long long number, int base, char* regex, rgxg_options_t
     int n;
     long long m;
 
+    EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
     EASY_IF_ERROR_ELSE(number < 0, RGXG_ERROR_NEGARG) {
         n = 0;
@@ -187,6 +188,8 @@ int rgxg_number_range(long long first, long long last, int base, int
     long long prefix, prefix_range_first, prefix_range_last, current_last;
     int n, min, max, number_of_leading_zeros, parenthesis, max_num_of_digits;
 
+    EASY_VALIDATE_MUTEXOPTIONS(RGXG_LEADINGZERO, RGXG_VARLEADINGZERO)
+    EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
     EASY_IF_ERROR_ELSE(first < 0 || last < 0 || min_length < 0, RGXG_ERROR_NEGARG)
     EASY_IF_ERROR_ELSE(first > last , RGXG_ERROR_RANGE) {
@@ -306,6 +309,8 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
     int n, count, no_power_of_base;
     long long boundary;
 
+    EASY_VALIDATE_MUTEXOPTIONS(RGXG_LEADINGZERO, RGXG_VARLEADINGZERO)
+    EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
     EASY_IF_ERROR_ELSE(number < 0 || min_length < 0, RGXG_ERROR_NEGARG)
     EASY_IF_ERROR_ELSE(number > rgxg_power(base, rgxg_number_of_digits_long_long(limits[base], base)), RGXG_ERROR_ARG2BIG) {
