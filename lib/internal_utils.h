@@ -1,6 +1,6 @@
 /* rgxg - ReGular eXpression Generator
  *
- * Copyright (c) 2010-2013 Hannes von Haugwitz
+ * Copyright (c) 2013 Hannes von Haugwitz
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -22,16 +22,9 @@
  *     distribution.
  */
 
-#ifndef _RGXG_NUMBER_H_INCLUDED
-#define _RGXG_NUMBER_H_INCLUDED
+#ifndef _INTERNAL_UTILS_H_INCLUDED
+#define _INTERNAL_UTILS_H_INCLUDED
 
-/* needed for rgxg_options_t */
-#include "types.h"
+extern int rgxg_plain_number_base10 (long long number, char *regex);
 
-extern int rgxg_number_range(long long first, long long last, int base,
-        int min_length, char* regex, rgxg_options_t options);
-
-extern int rgxg_number_greaterequal(long long number, int base,
-        int min_length, char* regex, rgxg_options_t options);
-
-#endif /* _RGXG_NUMBER_H_INCLUDED */
+#endif /* _INTERNAL_UTILS_H_INCLUDED */

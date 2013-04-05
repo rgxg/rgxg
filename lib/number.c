@@ -28,6 +28,9 @@
 /* needed for EASY_CHAR */
 #include "common_macros.h"
 
+/* needed for rgxg_plain_number_base10 */
+#include "internal_utils.h"
+
 /* needed for LLONG_MAX */
 #include <limits.h>
 
@@ -143,7 +146,7 @@ static int rgxg_base32_range(long long first, long long
         n = error; \
     } else
 
-int rgxg_number(long long number, int base, char* regex, rgxg_options_t
+static int rgxg_number_single(long long number, int base, char* regex, rgxg_options_t
         options) {
     int n;
     long long m;
@@ -178,7 +181,7 @@ int rgxg_number(long long number, int base, char* regex, rgxg_options_t
 }
 
 #define EASY_NUMBER_ASSIGNMENT(number) \
-    n += rgxg_number(number, base, (regex ? regex+n : NULL), options);
+    n += rgxg_number_single(number, base, (regex ? regex+n : NULL), options);
 
 #define EASY_BASE32_RANGE_ASSIGNMENT(first, last) \
     n += rgxg_base32_range(first, last, (regex ? regex+n : NULL), options);
@@ -195,6 +198,7 @@ int rgxg_number_range(long long first, long long last, int base, int
     EASY_IF_ERROR_ELSE(first > last , RGXG_ERROR_RANGE) {
         n = 0;
         parenthesis = 0;
+        max_num_of_digits = 0;
         if ((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) {
             max_num_of_digits = rgxg_number_of_digits_long_long(last, base);
             if (max_num_of_digits < min_length) {
@@ -240,7 +244,7 @@ int rgxg_number_range(long long first, long long last, int base, int
 
             if ((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) {
                 number_of_leading_zeros = max_num_of_digits-(prefix ? rgxg_number_of_digits_long_long(prefix, base): 0)-max-1;
-                if ( number_of_leading_zeros < ((RGXG_LEADINGZERO&options) ? 5 : 4)) { /* 0000000000 -> 0{10} (0?0?0?0? -> 0{0,4}) but 0000 -> 0000 (0?0?0? -> 0?0?0?) */
+                if (number_of_leading_zeros < ((RGXG_LEADINGZERO&options) ? 5 : 4)) { /* 0000000000 -> 0{10} (0?0?0?0? -> 0{0,4}) but 0000 -> 0000 (0?0?0? -> 0?0?0?) */
                     while (number_of_leading_zeros-- > 0) {
                         EASY_CHAR('0');
                         if (RGXG_VARLEADINGZERO&options) { EASY_CHAR('?'); }
@@ -249,10 +253,10 @@ int rgxg_number_range(long long first, long long last, int base, int
                     EASY_CHAR('0');
                     EASY_CHAR('{');
                     if (RGXG_VARLEADINGZERO&options) {
-                        n += rgxg_number(0, 10, (regex ? regex+n : NULL), 0);
+                        EASY_CHAR('0');
                         EASY_CHAR(',');
                     }
-                    n += rgxg_number(number_of_leading_zeros, 10, (regex ? regex+n : NULL), 0);
+                    n += rgxg_plain_number_base10(number_of_leading_zeros, (regex ? regex+n : NULL));
                     EASY_CHAR('}');
                 }
             }
@@ -275,7 +279,7 @@ int rgxg_number_range(long long first, long long last, int base, int
                 } else {
                     if ((RGXG_VARLEADINGZERO&options) && first == 0 &&
                             prefix == 0 && prefix_range_first == 0) {
-                        if( prefix_range_last != base -1) {
+                        if (prefix_range_last != base-1) {
                             EASY_CHAR('?');
                         }
                         min = 1;
@@ -286,10 +290,10 @@ int rgxg_number_range(long long first, long long last, int base, int
                     } else if (max > 1) {
                         EASY_CHAR('{');
                         if (min != max) {
-                            n += rgxg_number(min, 10, (regex ? regex+n : NULL), 0);
+                            n += rgxg_plain_number_base10(min, (regex ? regex+n : NULL));
                             EASY_CHAR(',');
                         }
-                        n += rgxg_number(max, 10, (regex ? regex+n : NULL), 0);
+                        n += rgxg_plain_number_base10(max, (regex ? regex+n : NULL));
                         EASY_CHAR('}');
                     }
                 }
@@ -337,7 +341,7 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
             EASY_CHAR('+');
         } else {
             EASY_CHAR('{');
-            n += rgxg_number(count, 10, (regex ? regex+n : NULL), 0);
+            n += rgxg_plain_number_base10(count, (regex ? regex+n : NULL));
             EASY_CHAR(',');
             EASY_CHAR('}');
         }

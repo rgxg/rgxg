@@ -1,3 +1,10 @@
+2013-04-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/number.h, +lib/internal_utils.c, +lib/internal_utils.h,
+	  lib/net.c, lib/number.c, Makefile.am:
+	  - removed 'rgxg_number' function from library
+	  - renamed 'rgxg_number' function to 'rgxg_number_single'
+	  - minor code cleanup
+
 2013-04-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/net.c, src/cidr.c, man/rgxg.1:
 	  - added support for IPv6 mixed notation

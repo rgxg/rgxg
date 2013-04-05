@@ -2,7 +2,8 @@ ACLOCAL_AMFLAGS = -I m4
 
 lib_LTLIBRARIES = librgxg.la
 librgxg_la_CFLAGS = -I$(top_srcdir)/include  -I$(top_srcdir)/lib
-librgxg_la_SOURCES = lib/common_macros.h lib/number.c lib/utils.c lib/net.c
+librgxg_la_SOURCES = lib/common_macros.h lib/internal_utils.h \
+					 lib/internal_utils.c lib/number.c lib/utils.c lib/net.c
 librgxg_la_LDFLAGS = -version-info $(LIB_CURRENT):$(LIB_REVISION):$(LIB_AGE)
 
 librgxgincludedir = $(includedir)/rgxg/
