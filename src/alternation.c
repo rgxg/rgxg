@@ -66,7 +66,6 @@ int alternation_argv_parse (int argc, char **argv) {
             EASY_DEFAULT(alternation)
         }
     if (cont) {
-        optind++; /* skip command string */
         if (argc > optind) {
             length = argc-optind;
             list = &argv[optind];

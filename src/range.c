@@ -124,7 +124,6 @@ int range_argv_parse (int argc, char **argv) {
             EASY_DEFAULT(range)
         }
     if (cont) {
-        optind++; /* skip command string */
         if (argc > optind) {
             if (is_string_of_digits(argv[optind])) {
                 first = strtoll(argv[optind], NULL, input_base);

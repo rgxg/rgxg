@@ -6,6 +6,9 @@
 	  - minor code cleanup
 	* lib/number.c:
 	  - rgxg_number_greaterequal: fixed bug with leading zeros
+	* src/alternation.c, src/cidr.c, src/escape.c, src/main.c,
+	  src/range.c:
+	  - adjusted argument parsing to support strict POSIX compliance
 
 2013-04-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/net.c, src/cidr.c, man/rgxg.1:

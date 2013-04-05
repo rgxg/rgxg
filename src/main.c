@@ -121,7 +121,7 @@ int main(int argc, char* *argv) {
         char *regex = NULL;
         if ((module = get_module(command)) != NULL) {
             module->set_defaults();
-            if (module->argv_parse(argc, argv)) {
+            if (module->argv_parse(--argc, ++argv)) { /* skip command string */
                 length = module->generate_regex(NULL);
                 if (length >= 0) {
                     regex = malloc(sizeof(char) * (length+1));

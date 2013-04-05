@@ -62,7 +62,6 @@ int escape_argv_parse (int argc, char **argv) {
             EASY_DEFAULT(escape)
         }
     if (cont) {
-        optind++; /* skip command string */
         if (argc > optind) {
             string = argv[optind];
         } else {

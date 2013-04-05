@@ -77,7 +77,6 @@ int cidr_argv_parse (int argc, char **argv) {
             EASY_DEFAULT(cidr)
         }
     if (cont) {
-        optind++; /* skip command string */
         if (argc > optind) {
             cidr = argv[optind];
         } else {
