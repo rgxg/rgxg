@@ -4,6 +4,8 @@
 	  - removed 'rgxg_number' function from library
 	  - renamed 'rgxg_number' function to 'rgxg_number_single'
 	  - minor code cleanup
+	* lib/number.c:
+	  - rgxg_number_greaterequal: fixed bug with leading zeros
 
 2013-04-04	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/net.c, src/cidr.c, man/rgxg.1:
