@@ -38,7 +38,7 @@
 #include <stdlib.h>
 
 /* pre-compile limits */
-long long limits[] = {
+static long long limits[] = {
     0L, LLONG_MAX, LLONG_MAX/2, LLONG_MAX/3, LLONG_MAX/4, LLONG_MAX/5,
     LLONG_MAX/6, LLONG_MAX/7, LLONG_MAX/8, LLONG_MAX/9, LLONG_MAX/10,
     LLONG_MAX/11, LLONG_MAX/12, LLONG_MAX/13, LLONG_MAX/14, LLONG_MAX/15,

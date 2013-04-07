@@ -1,3 +1,6 @@
+2013-04-07	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* lib/number.c: declared 'limits' variable static
+
 2013-04-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/number.h, +lib/internal_utils.c, +lib/internal_utils.h,
 	  lib/net.c, lib/number.c, Makefile.am:
