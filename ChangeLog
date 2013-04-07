@@ -3,6 +3,8 @@
 	* lib/internal_utils.c, lib/internal_utils.h, lib/net.c,
 	  lib/number.c:
 	  - changed prefix of internal function to 'internal_'
+	* Makefile.am:
+	  - added '-no-undefined' to librgxg_la_LDFLAGS
 
 2013-04-05	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/number.h, +lib/internal_utils.c, +lib/internal_utils.h,
