@@ -28,7 +28,7 @@
 /* needed for EASY_CHAR */
 #include "common_macros.h"
 
-/* needed for rgxg_plain_number_base10 */
+/* needed for internal_plain_number_base10 */
 #include "internal_utils.h"
 
 /* needed for LLONG_MAX */
@@ -200,7 +200,7 @@ if (number_of_leading_zeros < ((RGXG_LEADINGZERO&options) ? 5 : 4)) { \
         EASY_CHAR('0'); \
         EASY_CHAR(','); \
     } \
-    n += rgxg_plain_number_base10(number_of_leading_zeros, (regex ? regex+n : NULL)); \
+    n += internal_plain_number_base10(number_of_leading_zeros, (regex ? regex+n : NULL)); \
     EASY_CHAR('}'); \
 }
 
@@ -294,10 +294,10 @@ int rgxg_number_range(long long first, long long last, int base, int
                     } else if (max > 1) {
                         EASY_CHAR('{');
                         if (min != max) {
-                            n += rgxg_plain_number_base10(min, (regex ? regex+n : NULL));
+                            n += internal_plain_number_base10(min, (regex ? regex+n : NULL));
                             EASY_CHAR(',');
                         }
-                        n += rgxg_plain_number_base10(max, (regex ? regex+n : NULL));
+                        n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
                         EASY_CHAR('}');
                     }
                 }
@@ -347,7 +347,7 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
                 EASY_CHAR('+');
             } else if (i > 1) {
                 EASY_CHAR('{');
-                n += rgxg_plain_number_base10(i, (regex ? regex+n : NULL));
+                n += internal_plain_number_base10(i, (regex ? regex+n : NULL));
                 if (i == max) { EASY_CHAR(','); }
                 EASY_CHAR('}');
             }
@@ -365,7 +365,7 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
                         EASY_CHAR('1');
                         EASY_CHAR(',');
                     }
-                    n += rgxg_plain_number_base10(max, (regex ? regex+n : NULL));
+                    n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
                     EASY_CHAR('}');
                 }
             }

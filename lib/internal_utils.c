@@ -27,7 +27,7 @@
 /* needed for RGXG_ERROR_NEGARG */
 #include "rgxg/types.h"
 
-int rgxg_plain_number_base10 (long long number, char *regex) {
+int internal_plain_number_base10 (long long number, char *regex) {
     int n = 0;
     long long m = number;
 

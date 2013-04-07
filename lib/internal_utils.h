@@ -25,6 +25,6 @@
 #ifndef _INTERNAL_UTILS_H_INCLUDED
 #define _INTERNAL_UTILS_H_INCLUDED
 
-extern int rgxg_plain_number_base10 (long long number, char *regex);
+extern int internal_plain_number_base10 (long long number, char *regex);
 
 #endif /* _INTERNAL_UTILS_H_INCLUDED */

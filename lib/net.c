@@ -33,7 +33,7 @@
 /* needed for EASY_CHAR */
 #include "common_macros.h"
 
-/* needed for rgxg_plain_number_base10 */
+/* needed for internal_plain_number_base10 */
 #include "internal_utils.h"
 
 /* needed for NULL, strtol */
@@ -81,7 +81,7 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
             if (x > 1) {
                 EASY_CHAR(')');
                 EASY_CHAR('{');
-                n += rgxg_plain_number_base10(x, (regex ? regex+n : NULL));
+                n += internal_plain_number_base10(x, (regex ? regex+n : NULL));
                 EASY_CHAR('}');
                 x = 1;
             }
@@ -173,7 +173,7 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                             EASY_CHAR('1');
                             EASY_CHAR(',');
                         }
-                        n += rgxg_plain_number_base10(max, (regex ? regex+n : NULL));
+                        n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
                         EASY_CHAR('}');
                         max = 1;
                     }
