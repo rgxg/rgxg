@@ -1,3 +1,8 @@
+2013-04-09	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* man/rgxg.1:
+	  - fixed typo
+	  - removed LICENSE section
+
 2013-04-07	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* lib/number.c: declared 'limits' variable static
 	* lib/internal_utils.c, lib/internal_utils.h, lib/net.c,
