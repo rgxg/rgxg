@@ -1,6 +1,3 @@
-2013-04-10	Hannes von Haugwitz <hannes@vonhaugwitz.com>
-	* lib/utils.c: handle negative arguments
-
 2013-04-09	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* man/rgxg.1:
 	  - fixed typo

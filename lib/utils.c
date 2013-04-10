@@ -59,18 +59,14 @@ int rgxg_utils_escape_string(const char* src, int length, char *regex) {
     int i;
     int n = 0;
 
-    if (length < 0) {
-        n = RGXG_ERROR_NEGARG;
-    } else {
-        for (i = 0; i < length && src[i] != '\0'; ++i) {
-            if (rgxg_is_escape_char(src[i])) {
-                EASY_CHAR('\\')
-            }
-            EASY_CHAR(src[i])
+    for (i = 0; i < length && src[i] != '\0'; ++i) {
+        if (rgxg_is_escape_char(src[i])) {
+            EASY_CHAR('\\')
         }
-        if (i < length) {
-            EASY_CHAR('\0')
-        }
+        EASY_CHAR(src[i])
+    }
+    if (i < length) {
+        EASY_CHAR('\0')
     }
 
     return n;
@@ -81,9 +77,7 @@ int rgxg_utils_alternation(const char** list, int size, char *regex,
     int n = 0;
     int i;
 
-    if (size < 0) {
-        n = RGXG_ERROR_NEGARG;
-    } else if (size) {
+    if (size) {
         if (!(options&RGXG_NOOUTERPARENS) && size > 1) {
             EASY_CHAR('(')
         }
