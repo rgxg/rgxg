@@ -28,10 +28,13 @@
 /* needed for rgxg_options_t */
 #include "types.h"
 
-extern int rgxg_utils_escape_string (const char* src, int length,
+/* needed for size_t */
+#include <stddef.h>
+
+extern int rgxg_utils_escape_string (const char* src, size_t length,
         char *regex);
 
-extern int rgxg_utils_alternation (const char** list, int size,
+extern int rgxg_utils_alternation (const char** list, size_t size,
         char *regex, rgxg_options_t options);
 
 #endif /* _RGXG_UTILS_H_INCLUDED */

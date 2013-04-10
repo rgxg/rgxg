@@ -1,3 +1,7 @@
+2013-04-10	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* include/rgxg/utils.h, lib/utils.c:
+	  - use 'size_t' instead of 'int' for function parameters
+
 2013-04-09	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* man/rgxg.1:
 	  - fixed typo
