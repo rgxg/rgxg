@@ -9,6 +9,9 @@
 	  - code cleanup and optimizations
 	* include/rgxg/utils.h, lib/utils.c, src/escape.c:
 	  - added 'options' parameter to 'rgxg_utils_escape_string' function
+	* include/rgxg/utils.h, lib/common_macros.h, lib/net.c,
+	  lib/number.c, lib/utils.c:
+	  - cleaned up code
 
 2013-04-10	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/utils.h, lib/utils.c:

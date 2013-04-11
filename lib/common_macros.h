@@ -32,7 +32,7 @@
     if (regex) { regex[n] = char; } \
     n++;
 
-#define EASY_VALIDATE_MUTEXOPTIONS(optiion1, option2) \
-    if ((optiion1&options) && (option2&options)) { return RGXG_ERROR_MUTEXOPTIONS; }
+#define EASY_VALIDATE_MUTEXOPTIONS(option1, option2) \
+    if ((option1&options) && (option2&options)) { return RGXG_ERROR_MUTEXOPTIONS; }
 
 #endif /* _COMMON_MACROS_H_INCLUDED */

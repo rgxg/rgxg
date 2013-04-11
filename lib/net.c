@@ -70,24 +70,24 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
                 x++;
             }
             if (x > 1) {
-                EASY_CHAR('(');
+                EASY_CHAR('(')
             }
             if (i > 0) {
-                EASY_CHAR('\\');
-                EASY_CHAR('.');
+                EASY_CHAR('\\')
+                EASY_CHAR('.')
             }
             n += rgxg_number_range(first.octet[i], last.octet[i],
                     10, 0, (regex ? regex+n : NULL), RGXG_NONULLBYTE);
             if (x > 1) {
-                EASY_CHAR(')');
-                EASY_CHAR('{');
+                EASY_CHAR(')')
+                EASY_CHAR('{')
                 n += internal_plain_number_base10(x, (regex ? regex+n : NULL));
-                EASY_CHAR('}');
+                EASY_CHAR('}')
                 x = 1;
             }
         }
 
-        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
+        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; }
 
         return n;
     }
@@ -128,22 +128,23 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                 if (mixed_parenthesis < 0 && !(RGXG_NOMIXEDNOTATION&options)) {
                     mixed_parenthesis = j;
                     if (j > 0 || !(RGXG_NOOUTERPARENS&options)) {
-                        EASY_CHAR('('); }
+                        EASY_CHAR('(')
+                    }
                 }
                 if (j > 0 || (!(RGXG_NOMIXEDNOTATION&options) || !(RGXG_NOOUTERPARENS&options)) ) {
                     open_parentheses++;
-                    EASY_CHAR('(');
+                    EASY_CHAR('(')
                 }
-                if (j < 13) { EASY_CHAR(':'); }
-                if (j < 8) { EASY_CHAR(':'); }
-                if (j != 7 && j != 13) { EASY_CHAR('|'); }
-                if (j%8 < 7) { EASY_CHAR(':'); }
+                if (j < 13) { EASY_CHAR(':') }
+                if (j < 8) { EASY_CHAR(':') }
+                if (j != 7 && j != 13) { EASY_CHAR('|') }
+                if (j%8 < 7) { EASY_CHAR(':') }
                 i++; /* omit current zero hextet */
                 zeros = 1;
             } else {
                 if (mixed_parenthesis < 0 && !(RGXG_NOMIXEDNOTATION&options) && j == 6) {
                     mixed_parenthesis = 6;
-                    EASY_CHAR('(');
+                    EASY_CHAR('(')
                 }
                 zeros = 0;
             }
@@ -161,52 +162,52 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                         zeros = 0;
                     }
                     if (max > 1) {
-                        EASY_CHAR('(');
+                        EASY_CHAR('(')
                     }
                     if (i > 0) {
-                        EASY_CHAR(':');
+                        EASY_CHAR(':')
                     }
                     n+= rgxg_number_range(first.hextet[i], last.hextet[i],
                             16, 4, (regex ? regex+n : NULL),
                             (options&(RGXG_NOUPPERCASE|RGXG_NOLOWERCASE))|RGXG_VARLEADINGZERO|RGXG_NONULLBYTE);
                     if (max > 1) {
-                        EASY_CHAR(')');
-                        EASY_CHAR('{');
+                        EASY_CHAR(')')
+                        EASY_CHAR('{')
                         if (zeros) {
-                            EASY_CHAR('1');
-                            EASY_CHAR(',');
+                            EASY_CHAR('1')
+                            EASY_CHAR(',')
                         }
                         n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
-                        EASY_CHAR('}');
+                        EASY_CHAR('}')
                         max = 1;
                     }
                 }
                 if (!k) {
-                    EASY_CHAR('|');
+                    EASY_CHAR('|')
                     i = j%8;
                     zeros = 0;
                 }
             }
             if (j == 7 || j == 13) {
                 for (i = 0; i < open_parentheses; ++i) {
-                    EASY_CHAR(')');
+                    EASY_CHAR(')')
                 }
                 if (mixed_parenthesis >= 0) { /* mixed notation */
                     if (j == 7) {
-                        EASY_CHAR('|');
+                        EASY_CHAR('|')
                         open_parentheses = 0;
                         if (mixed_parenthesis == 6) {
-                            EASY_CHAR(':');
+                            EASY_CHAR(':')
                             n += rgxg_net_cidr_ipv4(&mixed, (prefix > 96 ? prefix-96 : 0), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
-                            EASY_CHAR(')');
+                            EASY_CHAR(')')
                             j = 14; /* done */
                         } else {
                             j = mixed_parenthesis+7; /* +1 in for loop */
                         }
                     } else { /* j == 13 */
-                        EASY_CHAR(':');
+                        EASY_CHAR(':')
                         n += rgxg_net_cidr_ipv4(&mixed, (prefix > 96 ? prefix-96 : 0), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
-                        if (mixed_parenthesis > 0 || !(RGXG_NOOUTERPARENS&options)) { EASY_CHAR(')'); }
+                        if (mixed_parenthesis > 0 || !(RGXG_NOOUTERPARENS&options)) { EASY_CHAR(')') }
                     }
                 } else { /* done */
                     j = 14;
@@ -214,7 +215,7 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
             }
         }
 
-        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
+        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; }
 
         return n;
     }
@@ -239,7 +240,7 @@ int rgxg_net_cidr_string (const char *cidr, char** endptr, char *regex,
         int start_of_zero_section = -1;
         do {
             if (cidr[1] == 'x') {
-                EASY_RETURN(RGXG_ERROR_SYNTAX, cidr+1);
+                EASY_RETURN(RGXG_ERROR_SYNTAX, cidr+1)
             }
             value = strtol(cidr, &ptr, 16);
             if (*ptr == '.' ) { /* IPv4 part found */
@@ -247,7 +248,7 @@ int rgxg_net_cidr_string (const char *cidr, char** endptr, char *regex,
                         (start_of_zero_section < 0 && i == 6)) {
                     break;
                 } else {
-                    EASY_RETURN(RGXG_ERROR_SYNTAX, cidr);
+                    EASY_RETURN(RGXG_ERROR_SYNTAX, cidr)
                 }
             }
             if (value > 65535 || value < 0) {
