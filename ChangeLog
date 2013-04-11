@@ -3,6 +3,10 @@
 	  lib/utils.c, src/main.c:
 	  - by default add terminating null byte to regex string
 	  - added 'RGXG_NONULLBYTE' option
+	* include/rgxg/number.h, lib/number.c: refactored code
+	  - removed run-time checks from static functions
+	  - use 'size_t' for 'min_length' function parameter
+	  - code cleanup and optimizations
 
 2013-04-10	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/utils.h, lib/utils.c:

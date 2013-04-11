@@ -48,10 +48,10 @@ static long long limits[] = {
     LLONG_MAX/31, LLONG_MAX/32
 };
 
-static int rgxg_number_of_digits_long_long(long long number, int base) {
+static size_t rgxg_number_of_digits_long_long(long long number, int base) {
     long long power = base;
     long long limit = limits[base];
-    int n = 1;
+    size_t n = 1;
 
     while(number >= power) {
         n++;
@@ -80,65 +80,63 @@ static int rgxg_base32_range(long long first, long long
     int top, brackets;
     int n = 0;
 
-    if (first < 0 || last < first || last > 32) {
-        return -1;
-    } else {
-        top = -1;
-        brackets=first-last || (last > 9 && !(RGXG_NOUPPERCASE&options || RGXG_NOLOWERCASE&options));
-        if (brackets) { EASY_CHAR('['); }
-        stk[++top] = first;
-        stk[++top] = last;
-        do {
-            last = stk[top--];
-            first = stk[top--];
-            switch (last-first) {
-                case 0:
-                    if (first <= 9 || !(RGXG_NOUPPERCASE&options)) {
-                        EASY_CHAR(rgxg_base32_char(first, 1));
-                    }
-                    if (first > 9 && !(RGXG_NOLOWERCASE&options)) {
-                        EASY_CHAR(rgxg_base32_char(first, 0));
-                    }
-                    break;
-                case 1:
-                    if (first <= 9 || !(RGXG_NOUPPERCASE&options)) {
-                        EASY_CHAR(rgxg_base32_char(first, 1));
-                    }
-                    if (first > 9 && !(RGXG_NOLOWERCASE&options)) {
-                        EASY_CHAR(rgxg_base32_char(first, 0));
-                    }
+    top = -1;
+    brackets=first-last || (last > 9 && !(RGXG_NOUPPERCASE&options || RGXG_NOLOWERCASE&options));
+    if (brackets) { EASY_CHAR('['); }
+    stk[++top] = first;
+    stk[++top] = last;
+    do {
+        last = stk[top--];
+        first = stk[top--];
+        switch (last-first) {
+            case 0:
+                if (first <= 9 || !(RGXG_NOUPPERCASE&options)) {
+                    EASY_CHAR(rgxg_base32_char(first, 1));
+                }
+                if (first > 9 && !(RGXG_NOLOWERCASE&options)) {
+                    EASY_CHAR(rgxg_base32_char(first, 0));
+                }
+                break;
+            case 1:
+                if (first <= 9 || !(RGXG_NOUPPERCASE&options)) {
+                    EASY_CHAR(rgxg_base32_char(first, 1));
+                }
+                if (first > 9 && !(RGXG_NOLOWERCASE&options)) {
+                    EASY_CHAR(rgxg_base32_char(first, 0));
+                }
 
-                    if (last <= 9 || !(RGXG_NOUPPERCASE&options)) {
+                if (last <= 9 || !(RGXG_NOUPPERCASE&options)) {
+                    EASY_CHAR(rgxg_base32_char(last, 1));
+                }
+                if (last > 9 && !(RGXG_NOLOWERCASE&options)) {
+                    EASY_CHAR(rgxg_base32_char(last, 0));
+                }
+                break;
+            default:
+                if (first <= 9 && last >= 10) {
+                    stk[++top] = 10;
+                    stk[++top] = last;
+                    stk[++top] = first;
+                    stk[++top] = 9;
+                } else {
+                    if (first <= 9 || !(RGXG_NOUPPERCASE&options)) {
+                        EASY_CHAR(rgxg_base32_char(first, 1));
+                        EASY_CHAR('-');
                         EASY_CHAR(rgxg_base32_char(last, 1));
                     }
-                    if (last > 9 && !(RGXG_NOLOWERCASE&options)) {
+                    if (first > 9 && !(RGXG_NOLOWERCASE&options)) {
+                        EASY_CHAR(rgxg_base32_char(first, 0));
+                        EASY_CHAR('-');
                         EASY_CHAR(rgxg_base32_char(last, 0));
                     }
-                    break;
-                default:
-                    if (first <= 9 && last >= 10) {
-                        stk[++top] = 10;
-                        stk[++top] = last;
-                        stk[++top] = first;
-                        stk[++top] = 9;
-                    } else {
-                        if (first <= 9 || !(RGXG_NOUPPERCASE&options)) {
-                            EASY_CHAR(rgxg_base32_char(first, 1));
-                            EASY_CHAR('-');
-                            EASY_CHAR(rgxg_base32_char(last, 1));
-                        }
-                        if (first > 9 && !(RGXG_NOLOWERCASE&options)) {
-                            EASY_CHAR(rgxg_base32_char(first, 0));
-                            EASY_CHAR('-');
-                            EASY_CHAR(rgxg_base32_char(last, 0));
-                        }
-                    }
-                    break;
-            }
-        } while (top > 0);
-        if (brackets) { EASY_CHAR(']'); }
-        return n;
-    }
+                }
+                break;
+        }
+    } while (top > 0);
+
+    if (brackets) { EASY_CHAR(']'); }
+
+    return n;
 }
 
 #define EASY_IF_ERROR_ELSE(condition, error) \
@@ -151,32 +149,29 @@ static int rgxg_number_single(long long number, int base, char* regex, rgxg_opti
     int n;
     long long m;
 
-    EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
-    EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
-    EASY_IF_ERROR_ELSE(number < 0, RGXG_ERROR_NEGARG) {
-        n = 0;
-        m = number;
-        do {
-            n += (m%base <= 9 || RGXG_NOUPPERCASE&options || RGXG_NOLOWERCASE&options) ? 1 : 4;
-            m /= base;
-        } while (m);
+    n = 0;
+    m = number;
+    do {
+        n += (m%base <= 9 || RGXG_NOUPPERCASE&options || RGXG_NOLOWERCASE&options) ? 1 : 4;
+        m /= base;
+    } while (m);
 
-        if (regex) {
-            int pos = n;
-            do {
-                m = number%base;
-                if (m <= 9 || RGXG_NOUPPERCASE&options || RGXG_NOLOWERCASE&options) {
-                    regex[--pos] = rgxg_base32_char(m, RGXG_NOLOWERCASE&options);
-                } else {
-                    regex[--pos] = ']';
-                    regex[--pos] = rgxg_base32_char(m, 0);
-                    regex[--pos] = rgxg_base32_char(m, 1);
-                    regex[--pos] = '[';
-                }
-                number /= base;
-            } while (number);
-        }
+    if (regex) {
+        int pos = n;
+        do {
+            m = number%base;
+            if (m <= 9 || RGXG_NOUPPERCASE&options || RGXG_NOLOWERCASE&options) {
+                regex[--pos] = rgxg_base32_char(m, RGXG_NOLOWERCASE&options);
+            } else {
+                regex[--pos] = ']';
+                regex[--pos] = rgxg_base32_char(m, 0);
+                regex[--pos] = rgxg_base32_char(m, 1);
+                regex[--pos] = '[';
+            }
+            number /= base;
+        } while (number);
     }
+
     return n;
 }
 
@@ -204,15 +199,17 @@ if (number_of_leading_zeros < ((RGXG_LEADINGZERO&options) ? 5 : 4)) { \
     EASY_CHAR('}'); \
 }
 
-int rgxg_number_range(long long first, long long last, int base, int
-        min_length, char* regex, rgxg_options_t options) {
-    long long prefix, prefix_range_first, prefix_range_last, current_last;
-    int n, min, max, number_of_leading_zeros, parenthesis, max_num_of_digits;
+int rgxg_number_range (long long first, long long last, int base,
+        size_t min_length, char *regex, rgxg_options_t options) {
+    long long prefix, prefix_range_first, prefix_range_last,
+         current_last, power_max, power_max_plus_one;
+    int n, min, max, number_of_leading_zeros, parenthesis;
+    size_t max_num_of_digits;
 
     EASY_VALIDATE_MUTEXOPTIONS(RGXG_LEADINGZERO, RGXG_VARLEADINGZERO)
     EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
-    EASY_IF_ERROR_ELSE(first < 0 || last < 0 || min_length < 0, RGXG_ERROR_NEGARG)
+    EASY_IF_ERROR_ELSE(first < 0 || last < 0, RGXG_ERROR_NEGARG)
     EASY_IF_ERROR_ELSE(first > last , RGXG_ERROR_RANGE) {
         n = 0;
         parenthesis = 0;
@@ -231,17 +228,22 @@ int rgxg_number_range(long long first, long long last, int base, int
             prefix_range_first = first/base != current_last/base ? 0 : first%base;
             prefix_range_last = current_last%base;
 
-            while (prefix_range_last == base-1 && (prefix*rgxg_power(base,max+1)-1 > first) ) {
+            power_max = rgxg_power(base, max);
+            power_max_plus_one = power_max * base;
+
+            while (prefix_range_last == base-1 && (prefix*power_max_plus_one-1 > first) ) {
                 ++max;
                 current_last /= base;
                 prefix = current_last/base;
+                power_max = power_max_plus_one;
+                power_max_plus_one *= base;
                 prefix_range_first =
-                    prefix*rgxg_power(base,max+1)+!prefix*rgxg_power(base,max) > first
+                    prefix*power_max_plus_one+!prefix*power_max > first
                     ? ((((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) && first == 0) ? 0 : !prefix)
-                    : first/rgxg_power(base,max)%base+(prefix*rgxg_power(base,max+1)+(first/rgxg_power(base,max)%base)*rgxg_power(base,max) != first);
+                    : first/power_max%base+(prefix*power_max_plus_one+(first/power_max%base)*power_max != first);
                 prefix_range_last = current_last%base;
             }
-            current_last = prefix*rgxg_power(base,max+1)+ prefix_range_first*rgxg_power(base,max);
+            current_last = prefix*power_max_plus_one + prefix_range_first*power_max;
             min = max;
             if (max && prefix_range_first == 1 && prefix_range_last == base-1 && !((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options)) {
                 while (current_last/base && current_last/base >= first) {
@@ -314,14 +316,16 @@ int rgxg_number_range(long long first, long long last, int base, int
     return n;
 }
 
-int rgxg_number_greaterequal(long long number, int base, int min_length, char* regex, rgxg_options_t options) {
-    int n, count, no_power_of_base, min, max, number_of_leading_zeros;
+int rgxg_number_greaterequal (long long number, int base,
+        size_t min_length, char *regex, rgxg_options_t options) {
+    int n, no_power_of_base, min, max, number_of_leading_zeros;
+    size_t count;
     long long boundary;
 
     EASY_VALIDATE_MUTEXOPTIONS(RGXG_LEADINGZERO, RGXG_VARLEADINGZERO)
     EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
     EASY_IF_ERROR_ELSE(base < 2 || base > 32, RGXG_ERROR_BASE)
-    EASY_IF_ERROR_ELSE(number < 0 || min_length < 0, RGXG_ERROR_NEGARG)
+    EASY_IF_ERROR_ELSE(number < 0, RGXG_ERROR_NEGARG)
     EASY_IF_ERROR_ELSE(number > rgxg_power(base, rgxg_number_of_digits_long_long(limits[base], base)), RGXG_ERROR_ARG2BIG) {
         n = 0;
         count = rgxg_number_of_digits_long_long(number ,base);
@@ -335,7 +339,7 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
         count -= (!no_power_of_base);
 
         max = (RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options && min_length > count+1 ? min_length-1 : count;
-        min = number ? count : max;
+        if (number) { min = count; } else { min = max; };
         for (int i = max ; i >= min; --i) {
             if (i < max) { EASY_CHAR('|'); }
             number_of_leading_zeros = max-i;
@@ -356,8 +360,8 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
         if (no_power_of_base) {
             boundary *= base;
             EASY_CHAR('|');
-            n += rgxg_number_range(number, boundary-1, base,
-                    (number == 0 && (RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options ? count : max)+1,
+            if (number > 0 || !((RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options)) { count = max; }
+            n += rgxg_number_range(number, boundary-1, base, count+1,
                     (regex ? regex+n : NULL), RGXG_NONULLBYTE|RGXG_NOOUTERPARENS|options);
             if (number == 0 && (RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) {
                 if (max > 1) {

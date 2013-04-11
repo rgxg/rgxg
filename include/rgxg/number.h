@@ -28,10 +28,13 @@
 /* needed for rgxg_options_t */
 #include "types.h"
 
-extern int rgxg_number_range(long long first, long long last, int base,
-        int min_length, char* regex, rgxg_options_t options);
+/* needed for size_t */
+#include <stddef.h>
 
-extern int rgxg_number_greaterequal(long long number, int base,
-        int min_length, char* regex, rgxg_options_t options);
+extern int rgxg_number_range (long long first, long long last, int base,
+        size_t min_length, char *regex, rgxg_options_t options);
+
+extern int rgxg_number_greaterequal (long long number, int base,
+        size_t min_length, char *regex, rgxg_options_t options);
 
 #endif /* _RGXG_NUMBER_H_INCLUDED */
