@@ -309,6 +309,7 @@ int rgxg_number_range(long long first, long long last, int base, int
         if (parenthesis) {
             EASY_CHAR(')');
         }
+        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
     }
     return n;
 }
@@ -357,7 +358,7 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
             EASY_CHAR('|');
             n += rgxg_number_range(number, boundary-1, base,
                     (number == 0 && (RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options ? count : max)+1,
-                    (regex ? regex+n : NULL), RGXG_NOOUTERPARENS|options);
+                    (regex ? regex+n : NULL), RGXG_NONULLBYTE|RGXG_NOOUTERPARENS|options);
             if (number == 0 && (RGXG_LEADINGZERO|RGXG_VARLEADINGZERO)&options) {
                 if (max > 1) {
                     EASY_CHAR('{');
@@ -373,6 +374,7 @@ int rgxg_number_greaterequal(long long number, int base, int min_length, char* r
                 EASY_CHAR(')');
             }
         }
+        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
     }
 
     return n;

@@ -126,7 +126,6 @@ int main(int argc, char* *argv) {
                 if (length >= 0) {
                     regex = malloc(sizeof(char) * (length+1));
                     module->generate_regex(regex);
-                    regex[length] = '\0';
                     fprintf(stdout, "%s\n", regex);
                     exit_status = 0;
                 }

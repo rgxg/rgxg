@@ -92,5 +92,7 @@ int rgxg_utils_alternation(const char** list, size_t size, char *regex,
         }
     }
 
+    if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
+
     return n;
 }

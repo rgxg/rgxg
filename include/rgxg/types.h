@@ -34,6 +34,7 @@ typedef long rgxg_options_t;
 #define RGXG_VARLEADINGZERO             (1L<<4)
 #define RGXG_NOZEROCOMPRESSION          (1L<<5)
 #define RGXG_NOMIXEDNOTATION            (1L<<6)
+#define RGXG_NONULLBYTE                 (1L<<7)
 
 #define RGXG_ERROR_RANGE                (-1)
 #define RGXG_ERROR_BASE                 (-2)

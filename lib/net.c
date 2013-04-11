@@ -77,7 +77,7 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
                 EASY_CHAR('.');
             }
             n += rgxg_number_range(first.octet[i], last.octet[i],
-                    10, 0, (regex ? regex+n : NULL), 0);
+                    10, 0, (regex ? regex+n : NULL), RGXG_NONULLBYTE);
             if (x > 1) {
                 EASY_CHAR(')');
                 EASY_CHAR('{');
@@ -86,6 +86,9 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
                 x = 1;
             }
         }
+
+        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
+
         return n;
     }
 }
@@ -165,7 +168,7 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                     }
                     n+= rgxg_number_range(first.hextet[i], last.hextet[i],
                             16, 4, (regex ? regex+n : NULL),
-                            (options&(RGXG_NOUPPERCASE|RGXG_NOLOWERCASE))|RGXG_VARLEADINGZERO);
+                            (options&(RGXG_NOUPPERCASE|RGXG_NOLOWERCASE))|RGXG_VARLEADINGZERO|RGXG_NONULLBYTE);
                     if (max > 1) {
                         EASY_CHAR(')');
                         EASY_CHAR('{');
@@ -194,7 +197,7 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                         open_parentheses = 0;
                         if (mixed_parenthesis == 6) {
                             EASY_CHAR(':');
-                            n += rgxg_net_cidr_ipv4(&mixed, (prefix > 96 ? prefix-96 : 0), (regex ? regex+n : NULL), 0);
+                            n += rgxg_net_cidr_ipv4(&mixed, (prefix > 96 ? prefix-96 : 0), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
                             EASY_CHAR(')');
                             j = 14; /* done */
                         } else {
@@ -202,7 +205,7 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                         }
                     } else { /* j == 13 */
                         EASY_CHAR(':');
-                        n += rgxg_net_cidr_ipv4(&mixed, (prefix > 96 ? prefix-96 : 0), (regex ? regex+n : NULL), 0);
+                        n += rgxg_net_cidr_ipv4(&mixed, (prefix > 96 ? prefix-96 : 0), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
                         if (mixed_parenthesis > 0 || !(RGXG_NOOUTERPARENS&options)) { EASY_CHAR(')'); }
                     }
                 } else { /* done */
@@ -210,6 +213,9 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
                 }
             }
         }
+
+        if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; } \
+
         return n;
     }
 }
@@ -328,7 +334,7 @@ int rgxg_net_cidr_string (const char *cidr, char** endptr, char *regex,
         } else {
             EASY_RETURN(RGXG_ERROR_SYNTAX, ptr)
         }
-        n = rgxg_net_cidr_ipv4 (&address, prefix, regex, 0);
+        n = rgxg_net_cidr_ipv4 (&address, prefix, regex, options);
     }
 
     EASY_RETURN(n, ptr)
