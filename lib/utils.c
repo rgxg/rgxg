@@ -55,7 +55,8 @@ static int rgxg_is_escape_char(char c) {
     }
 }
 
-int rgxg_utils_escape_string(const char* src, size_t length, char *regex) {
+int rgxg_utils_escape_string(const char* src, size_t length,
+        char *regex, rgxg_options_t options) {
     size_t i;
     int n = 0;
 
@@ -65,9 +66,8 @@ int rgxg_utils_escape_string(const char* src, size_t length, char *regex) {
         }
         EASY_CHAR(src[i])
     }
-    if (i < length) {
-        EASY_CHAR('\0')
-    }
+
+    if (!(RGXG_NONULLBYTE&options) && regex) { regex[n] = '\0'; }
 
     return n;
 }
@@ -85,7 +85,7 @@ int rgxg_utils_alternation(const char** list, size_t size, char *regex,
             if (i != 0) {
                 EASY_CHAR('|')
             }
-            n += rgxg_utils_escape_string(list[i], strlen(list[i]), (regex ? regex+n : NULL));
+            n += rgxg_utils_escape_string(list[i], strlen(list[i]), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
         }
         if (!(options&RGXG_NOOUTERPARENS) && size > 1) {
             EASY_CHAR(')')

@@ -74,5 +74,5 @@ int escape_argv_parse (int argc, char **argv) {
 }
 
 int escape_generate_regex (char * regex) {
-    return rgxg_utils_escape_string(string, strlen(string), regex);
+    return rgxg_utils_escape_string(string, strlen(string), regex, 0);
 }

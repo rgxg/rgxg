@@ -32,7 +32,7 @@
 #include <stddef.h>
 
 extern int rgxg_utils_escape_string (const char* src, size_t length,
-        char *regex);
+        char *regex, rgxg_options_t options);
 
 extern int rgxg_utils_alternation (const char** list, size_t size,
         char *regex, rgxg_options_t options);
