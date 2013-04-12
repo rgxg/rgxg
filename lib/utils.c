@@ -55,12 +55,12 @@ static int rgxg_is_escape_char(char c) {
     }
 }
 
-int rgxg_utils_escape_string (const char *src, size_t length,
+int rgxg_utils_escape_string (const char *src, size_t size,
         char *regex, rgxg_options_t options) {
     size_t i;
     int n = 0;
 
-    for (i = 0; i < length && src[i] != '\0'; ++i) {
+    for (i = 0; i < size && src[i] != '\0'; ++i) {
         if (rgxg_is_escape_char(src[i])) {
             EASY_CHAR('\\')
         }
@@ -72,7 +72,7 @@ int rgxg_utils_escape_string (const char *src, size_t length,
     return n;
 }
 
-int rgxg_utils_alternation (const char **list, size_t size,
+int rgxg_utils_alternation (const char **patterns, size_t size,
         char *regex, rgxg_options_t options) {
     int n = 0;
     size_t i;
@@ -85,7 +85,7 @@ int rgxg_utils_alternation (const char **list, size_t size,
             if (i != 0) {
                 EASY_CHAR('|')
             }
-            n += rgxg_utils_escape_string(list[i], strlen(list[i]), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
+            n += rgxg_utils_escape_string(patterns[i], strlen(patterns[i]), (regex ? regex+n : NULL), RGXG_NONULLBYTE);
         }
         if (!(options&RGXG_NOOUTERPARENS) && size > 1) {
             EASY_CHAR(')')
