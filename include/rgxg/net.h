@@ -31,18 +31,18 @@
 /* needed for uint8_t, uint16_t */
 #include <inttypes.h>
 
-typedef struct ipv4_s {
+typedef struct {
     uint8_t octet[4];
-} ipv4_t;
+} rgxg_ipv4_t;
 
-typedef struct ipv6_s {
+typedef struct {
     uint16_t hextet[8];
-} ipv6_t;
+} rgxg_ipv6_t;
 
-extern int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
+extern int rgxg_net_cidr_ipv4 (const rgxg_ipv4_t *address, int prefix, char *regex,
         rgxg_options_t options);
 
-extern int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
+extern int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
         rgxg_options_t options);
 
 extern int rgxg_net_cidr_string (const char *cidr, char **endptr, char *regex,

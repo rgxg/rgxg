@@ -42,7 +42,7 @@
 /* needed for uint8_t, uint16_t */
 #include <inttypes.h>
 
-int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
+int rgxg_net_cidr_ipv4 (const rgxg_ipv4_t *address, int prefix, char *regex,
         rgxg_options_t options) {
 
     if (prefix < 0 || prefix > 32) {
@@ -51,7 +51,7 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
         int i, n, x, bits;
         n = 0;
         x = 1;
-        ipv4_t first, last;
+        rgxg_ipv4_t first, last;
         uint8_t mask;
         for (i = 0; i < 4; ++i) {
             bits = i*8;
@@ -93,7 +93,7 @@ int rgxg_net_cidr_ipv4 (const ipv4_t *address, int prefix, char *regex,
     }
 }
 
-int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
+int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
         rgxg_options_t options) {
 
     EASY_VALIDATE_MUTEXOPTIONS(RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
@@ -103,8 +103,8 @@ int rgxg_net_cidr_ipv6 (const ipv6_t *address, int prefix, char *regex,
         int i, n, max, bits, zeros, open_parentheses, mixed_parenthesis;
         n = 0;
         max = 1;
-        ipv6_t first, last;
-        ipv4_t mixed;
+        rgxg_ipv6_t first, last;
+        rgxg_ipv4_t mixed;
         uint16_t mask;
         for (i = 0; i < 8; ++i) {
             bits = i*16;
@@ -236,7 +236,7 @@ int rgxg_net_cidr_string (const char *cidr, char** endptr, char *regex,
 
     strtol(cidr, &ptr, 16); /* pre-check to determine address type */
     if (*ptr == ':') { /* IPV6 address */
-        ipv6_t address;
+        rgxg_ipv6_t address;
         int start_of_zero_section = -1;
         do {
             if (cidr[1] == 'x') {
@@ -313,7 +313,7 @@ int rgxg_net_cidr_string (const char *cidr, char** endptr, char *regex,
         }
         n = rgxg_net_cidr_ipv6 (&address, prefix, regex, options);
     } else { /* IPV4 address */
-        ipv4_t address;
+        rgxg_ipv4_t address;
         do {
             value = strtol(cidr, &ptr, 10);
             if (value > 255 || value < 0) {

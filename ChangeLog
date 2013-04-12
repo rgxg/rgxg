@@ -2,6 +2,9 @@
 	* include/rgxg/utils.h, lib/utils.c:
 	  - renamed 'length' parameter to 'size'
 	  - renamed 'list' parameter to 'patterns'
+	* include/rgxg/net.h, lib/net.c:
+	  - renamed 'ipv4_t' structure to 'rgxg_ipv4_t'
+	  - renamed 'ipv6_t' structure to 'rgxg_ipv6_t'
 
 2013-04-11	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/net.c, lib/number.c,
