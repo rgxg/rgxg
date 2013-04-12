@@ -1,0 +1,207 @@
+.TH RGXG_NET_CIDR_STRING 3 "Apr 12, 2013" "" "librgxg manual"
+.SH NAME
+rgxg_net_cidr_string, rgxg_net_cidr_ipv4, rgxg_net_cidr_ipv6 - create regex that matches all addresses of the given CIDR block
+
+.SH SYNOPSIS
+.nf
+.B #include <rgxg/net.h>
+
+.BI "int rgxg_net_cidr_string (const char *" cidr ", char **" endptr ", char *" regex ,
+.ti +5n
+.BI "rgxg_options_t " options );
+
+.BI "int rgxg_net_cidr_ipv4 (const rgxg_ipv4_t *" address ", int " prefix ", char *" regex ,
+.ti +5n
+.BI "rgxg_options_t " options );
+.BI "int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *" address ", int " prefix ", char *" regex ,
+.ti +5n
+.BI "rgxg_options_t " options );
+.fi
+
+.SH DESCRIPTION
+.BR  rgxg_net_cidr_string ()
+generates the (extended) regular expression that matches all addresses of the CIDR block given as string in
+.I cidr
+(e.g. "192.168.0.0/24" or "2001:db8:aaaa::/64").
+.I cidr
+must be valid and not NULL.
+
+If
+.I endptr
+is not NULL,
+.BR  rgxg_net_cidr_string ()
+stores on success the address of the first character which is not part of the CIDR block in
+.IR *endptr .
+If there is no error and
+.I **endptr
+is '\\0', then the entire string has been parsed. The
+.I *endptr
+values in case of an error are described in the
+.B ERRORS
+section below.
+
+.BR rgxg_net_cidr_ipv4 "() and " rgxg_net_cidr_ipv6 "()"
+generate the (extended) regular expression that matches all addresses of the CIDR block specified by
+.I address
+and
+.IR prefix " (network identifier),"
+which must be between 0 and 32
+.RB "(" rgxg_net_cidr_ipv4 "())"
+respectively 128
+.RB "(" rgxg_net_cidr_ipv6 "())"
+inclusive.
+.I address
+must be valid and not NULL.
+
+The
+.I rgxg_ipv4_t
+and
+.I rgxg_ipv6_t
+structures which are the types of
+.I address
+are defined in
+.IR <rgxg/net.h> .
+
+.in +4n
+.nf
+typedef struct {
+    uint8_t octet[4];
+} rgxg_ipv4_t;
+
+typedef struct {
+    uint16_t hextet[8];
+} rgxg_ipv6_t;
+.fi
+.in
+
+The
+.BR n -th
+element of the
+.IR octet / hextet
+array stores the
+.BR "(n+1)" -th
+octet/hextet of the IPv4 respectively IPv6 address (i.e. for instance the first octet
+.RB "'" 192 "'"
+in
+.RB "'" 192.168.0.0 "'"
+is stored in
+.IR octet[0] ")."
+
+The generated regular expression is written to the character string
+.IR regex ,
+including the terminating null byte ('\\0'), unless
+.B RGXG_NONULLBYTE
+is set. If
+.I regex
+is NULL the return value is the number of characters (excluding the terminating null byte) that would have been written in case
+.I regex
+has been initialized. Note that the functions assume an arbitrarily long
+.I regex
+string, callers must
+.B ensure
+that the given string is large enough to not overflow the actual space.
+
+.I options
+is either zero, or the
+.RB bitwise- or
+of one or more of the following macros:
+
+Options marked as
+.RB "'"IPv6 " only'"
+can be used with
+.BR rgxg_net_cidr_string ()
+(when parsing IPv6 CIDR blocks) and with
+.BR rgxg_net_cidr_ipv6 ().
+
+.TP
+.BR RGXG_NOUPPERCASE " (" IPv6 " only)"
+The generated regular expression only matches IPv6 addresses with lower case
+letters. By default both lower and upper case letters are matched.
+.TP
+.BR RGXG_NOLOWERCASE " (" IPv6 " only)"
+The generated regular expression only matches IPv6 addresses with upper case
+letters. By default both lower and upper case letters are matched.
+.TP
+.BR RGXG_NOZEROCOMPRESSION " (" IPv6 " only)"
+The generated regular expression does not match IPv6 addresses with zero
+compression (second form of text representation of IPv6 addresses mentioned in
+section 2.2 of
+.BR  "RFC 4291" ).
+.TP
+.BR RGXG_NOMIXEDNOTATION " (" IPv6 " only)"
+The generated regular expression does not match IPv6 addresses in mixed
+notation (third form of text representation of IPv6 addresses mentioned in
+section 2.2 of
+.BR  "RFC 4291" ).
+.TP
+.BR RGXG_NOOUTERPARENS " (" IPv6 " only)"
+Omit the outer parenthesis, if any, of the regular expression.
+
+.TP
+.B RGXG_NONULLBYTE
+Do not add the terminating null byte ('\\0') to the
+.I regex
+string.
+
+.PP
+Note that
+.BR RGXG_NOUPPERCASE " and " RGXG_NOLOWERCASE
+are mutual exclusive options.
+
+.SH "RETURN VALUE"
+
+Upon successful return, these functions return the number of characters (excluding the terminating null byte) written to
+.IR regex .
+
+If an error occurs, a (negative) error code is returned (see
+.B ERRORS
+section).
+
+.SH "ERRORS"
+The following errors can be returned:
+.TP
+.B RGXG_ERROR_PREFIX
+Invalid network identifier (e.g. the prefix is lesser than 0 or greater than 32
+(IPv4) respectively 128 (IPv6)).
+
+.BR rgxg_net_cidr_string ():
+If
+.I endptr
+is not NULL,
+.I *endptr
+points to the first character of the invalid prefix.
+.TP
+.BR RGXG_ERROR_ARG2BIG " (" rgxg_net_cidr_string "() only)"
+At least one octet/hextet is too large.
+
+.BR rgxg_net_cidr_string ():
+If
+.I endptr
+is not NULL,
+.I *endptr
+points to the first digit of the too large octet/hextet.
+.TP
+.BR RGXG_ERROR_SYNTAX " (" rgxg_net_cidr_string "() only)"
+Syntax error in
+.I cidr
+string.
+If
+.I endptr
+is not NULL,
+.I *endptr
+points to the character that causes the syntax error.
+
+.TP
+.BR RGXG_ERROR_MUTEXOPTIONS " (" rgxg_net_cidr_string "()/" rgxg_net_cidr_ipv6 "() only)"
+Two mutual exclusive options were specified.
+
+.SH AVAILABILITY
+These functions are available since rgxg 0.1.
+
+.SH SEE ALSO
+.BR regex (7),
+.BR rgxg_number_greaterequal (3),
+.BR rgxg_number_range (3).
+
+.SH AUTHOR
+Hannes von Haugwitz <hannes@vonhaugwitz.com>

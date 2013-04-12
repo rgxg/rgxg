@@ -1,0 +1,154 @@
+.TH RGXG_NUMBER_RANGE 3 "Apr 12, 2013" "" "librgxg manual"
+.SH NAME
+rgxg_number_range, rgxg_number_greaterequal \- create regex that matches integers in the given range
+
+.SH SYNOPSIS
+.nf
+.B #include <rgxg/number.h>
+
+.BI "int rgxg_number_range (long long " first ", long long " last ", int " base ,
+.ti +5n
+.BI "size_t " min_length ", char *" regex ", rgxg_options_t " options );
+
+.BI "int rgxg_number_greaterequal (long long " number ", int " base ,
+.ti +5n
+.BI "size_t " min_length ", char *" regex ", rgxg_options_t " options );
+.fi
+
+.SH DESCRIPTION
+.BR  rgxg_number_range ()
+generates the (extended) regular expression that matches integers in the range between
+.I first
+and
+.IR last .
+
+.BR rgxg_number_greaterequal ()
+generates the (extended) regular expression that matches integers greater than or equal to
+.IR number .
+
+The base of the matched integers is specified by
+.IR base ,
+which must be between 2 and 32 inclusive. Note that for bases greater than 16 the "extended hex" alphabet is used (referenced as 'base32hex' in
+.BR  "RFC 4648" ).
+
+If
+.BR RGXG_LEADINGZERO " or " RGXG_VARLEADINGZERO
+is set, then
+.I min_length
+specifies the minimum length of the matched integers (otherwise the argument is ignored). For instance the number 5 with
+.I min_length
+set to 3 and
+options set to
+.B RGXG_LEADINGZERO
+is matched as '005'. By default the number of leading zeros depends on the length of the
+.I last
+number. If
+.I min_length
+is lesser than or equal to the number of digits of
+.IR last ,
+the value has no effect.
+
+The generated regular expression is written to the character string
+.IR regex ,
+including the terminating null byte ('\\0'), unless
+.B RGXG_NONULLBYTE
+is set. If
+.I regex
+is NULL the return value is the number of characters (excluding the terminating null byte) that would have been written in case
+.I regex
+has been initialized. Note that the functions assume an arbitrarily long
+.I regex
+string, callers must
+.B ensure
+that the given string is large enough to not overflow the actual space.
+
+.I options
+is either zero, or the
+.RB bitwise- or
+of one or more of the following macros:
+
+.TP
+.B RGXG_NOUPPERCASE
+The generated regular expression only matches lower case letters for
+.I base
+values greater than 10. The default is to match both lower and upper case letters.
+
+.TP
+.B RGXG_NOLOWERCASE
+The generated regular expression only matches upper case letters for
+.I base
+values greater than 10. The default is to match both lower and upper case letters.
+
+.TP
+.B RGXG_NOOUTERPARENS
+Omit the outer parenthesis, if any, of the regular expression.
+
+.TP
+.B RGXG_LEADINGZERO
+The generated regular expression only matches integers with leading zeros (e.g. the integer 5 is only matched as '005'). The number of leading zeros is influenced by the
+.I min_length
+argument (see above). By default no leading zeros are matched.
+
+.TP
+.B RGXG_VARLEADINGZERO
+The generated regular expression matches integers with a variable number of leading zeros (e.g. the number 5 is matched as '5', '05' and '005'). The maximum number of leading zeros is influenced by the
+.I min_length
+argument (see above). By default no leading zeros are matched.
+
+.TP
+.B RGXG_NONULLBYTE
+Do not add the terminating null byte ('\\0') to the
+.I regex
+string.
+
+.PP
+Note that
+.BR RGXG_NOUPPERCASE " and " RGXG_NOLOWERCASE
+as well as
+.BR RGXG_LEADINGZERO " and " RGXG_VARLEADINGZERO
+are mutual exclusive options.
+
+.SH "RETURN VALUE"
+
+Upon successful return, these functions return the number of characters (excluding the terminating null byte) written to
+.IR regex .
+
+If an error occurs, a (negative) error code is returned (see
+.B ERRORS
+section).
+
+.SH "ERRORS"
+The following errors can be returned:
+.TP
+.BR RGXG_ERROR_RANGE " (" rgxg_number_range "() only)"
+Invalid range (e.g.
+.I first
+number is greater than
+.I last
+number).
+.TP
+.B RGXG_ERROR_BASE
+The base is lesser than 2 or greater than 32.
+.TP
+.B RGXG_ERROR_NEGARG
+At least one argument is negative.
+.TP
+.BR RGXG_ERROR_ARG2BIG " (" rgxg_number_greaterequal "() only)"
+The value of
+.I number
+is too large.
+.TP
+.B RGXG_ERROR_MUTEXOPTIONS
+Two mutual exclusive options were specified.
+
+.SH AVAILABILITY
+These functions are available since rgxg 0.1.
+
+.SH SEE ALSO
+.BR regex (7),
+.BR rgxg_net_cidr_ipv4 (3),
+.BR rgxg_net_cidr_ipv6 (3),
+.BR rgxg_net_cidr_string (3).
+
+.SH AUTHOR
+Hannes von Haugwitz <hannes@vonhaugwitz.com>

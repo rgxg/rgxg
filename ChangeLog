@@ -12,6 +12,10 @@
 	* lib/net.c, src/cidr.c, man/rgxg.1:
 	  - adjusted error handling in 'rgxg_net_cidr_string' function
 	  - changed some wording
+	* +man/rgxg_net_cidr_string.3, +man/rgxg_number_range.3,
+	  +man/rgxg_utils_escape_string.3, +man/rgxg_utils_alternation.3,
+	  configure.ac, Makefile.am:
+	  - added manual pages for library functions
 
 2013-04-11	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/net.c, lib/number.c,

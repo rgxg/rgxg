@@ -1,0 +1,73 @@
+.TH RGXG_UTILS_ALTERNATION 3 "Apr 12, 2013" "" "librgxg manual"
+.SH NAME
+rgxg_utils_alternation \- create regex that matches any of the given patterns
+
+.SH SYNOPSIS
+.nf
+.B #include <rgxg/utils.h>
+
+.BI "int rgxg_utils_alternation (const char **" patterns ", size_t " size ,
+.ti +5n
+.BI "char *" regex ", rgxg_options_t " options );
+.fi
+
+.SH DESCRIPTION
+.BR  rgxg_utils_alternation ()
+generates the (extended) regular expression that matches any of the given
+.IR patterns ,
+an array of constant character strings.
+.I size
+specifies the number of entries of the array to use for the regular expression. Both
+.I patterns
+and its entries must be valid and not NULL for
+.IR size >0.
+
+Note that callers of
+.BR rgxg_utils_alternation ()
+which pass a non-constant 'char **' value as
+.I patterns
+need to use an explicit cast (i.e. '(const char**)') to avoid an incompatible pointer type warning.
+
+The generated regular expression is written to the character string
+.IR regex ,
+including the terminating null byte ('\\0'), unless
+.B RGXG_NONULLBYTE
+is set. If
+.I regex
+is NULL the return value is the number of characters (excluding the terminating null byte) that would have been written in case
+.I regex
+has been initialized. Note that the functions assume an arbitrarily long
+.I regex
+string, callers must
+.B ensure
+that the given string is large enough to not overflow the actual space.
+
+.I options
+is either zero, or the
+.RB bitwise- or
+of one or more of the following macros:
+
+.TP
+.B RGXG_NOOUTERPARENS
+Omit the outer parenthesis, if any, of the regular expression.
+
+.TP
+.B RGXG_NONULLBYTE
+Do not add the terminating null byte ('\\0') to the
+.I regex
+string.
+
+.SH "RETURN VALUE"
+.BR rgxg_utils_alternation ()
+returns the number of characters (excluding the terminating null byte) written to
+.IR regex .
+
+.SH AVAILABILITY
+This function is available since rgxg 0.1.
+
+.SH SEE ALSO
+.BR regex (7),
+.BR rgxg_utils_escape_string (3).
+
+.SH AUTHOR
+Hannes von Haugwitz <hannes@vonhaugwitz.com>

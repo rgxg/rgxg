@@ -25,9 +25,24 @@ rgxg_LDADD = librgxg.la
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = lib/rgxg.pc
 
-man_MANS = man/rgxg.1
+man_MANS = man/rgxg.1 man/rgxg_number_range.3 \
+		   man/rgxg_net_cidr_string.3 man/rgxg_utils_escape_string.3 \
+		   man/rgxg_utils_alternation.3
 
 EXTRA_DIST = lib/rgxg.pc.in $(man_MANS)
 dist_doc_DATA=README
+
+install-data-hook:
+	rm -f $(DESTDIR)$(man3dir)/rgxg_number_greaterequal.3
+	$(LN_S) rgxg_number_range.3 $(DESTDIR)$(man3dir)/rgxg_number_greaterequal.3
+	rm -f $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv4.3
+	$(LN_S) rgxg_net_cidr_string.3 $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv4.3
+	rm -f $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv6.3
+	$(LN_S) rgxg_net_cidr_string.3 $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv6.3
+
+uninstall-hook:
+	rm -f $(DESTDIR)$(man3dir)/rgxg_number_greaterequal.3
+	rm -f $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv4.3
+	rm -f $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv6.3
 
 DISTCLEANFILES = lib/rgxg.pc
