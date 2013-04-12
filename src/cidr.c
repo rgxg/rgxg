@@ -50,7 +50,7 @@ void cidr_print_help () {
         "Usage: rgxg cidr [options] CIDR\n\n"
         "    -h         display this help message\n"
         "    -u         do not match IPv6 addresses with zero compression\n"
-        "    -s         do not match IPv6 addresses with mixed notation\n"
+        "    -s         do not match IPv6 addresses in mixed notation\n"
         "    -l         only match IPv6 addresses with lower case letters\n"
         "    -U         only match IPv6 addresses with upper case letters\n"
         "    -N         omit the outer parentheses, if any\n"
@@ -80,7 +80,7 @@ int cidr_argv_parse (int argc, char **argv) {
         if (argc > optind) {
             cidr = argv[optind];
         } else {
-            EASY_ERROR(cidr, "%s", "missing CIDR block");
+            EASY_ERROR(cidr, "%s", "missing CIDR block")
             cont = 0;
         }
     }
@@ -97,11 +97,7 @@ int cidr_generate_regex (char * regex) {
     position = (ptr-cidr)+1;
     switch (n) {
         case RGXG_ERROR_ARG2BIG:
-            EASY_ERROR(cidr, syntax error: octet/hextet too big: %s, cidr)
-            fprintf(stderr, "%*c\n", 47+position, '^');
-            break;
-        case RGXG_ERROR_NEGARG:
-            EASY_ERROR(cidr, syntax error: negative octet/hextet: %s, cidr)
+            EASY_ERROR(cidr, syntax error: octet/hextet too large: %s, cidr)
             fprintf(stderr, "%*c\n", 49+position, '^');
             break;
         case RGXG_ERROR_SYNTAX:

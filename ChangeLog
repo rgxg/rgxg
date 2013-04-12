@@ -9,6 +9,9 @@
 	  - call 'AM_PROG_AR' if available
 	  - updated 'AC_CHECK_HEADERS'
 	  - added checks for 'size_t', 'uint8_t' and 'uint16_t'
+	* lib/net.c, src/cidr.c, man/rgxg.1:
+	  - adjusted error handling in 'rgxg_net_cidr_string' function
+	  - changed some wording
 
 2013-04-11	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/types.h, lib/net.c, lib/number.c,
