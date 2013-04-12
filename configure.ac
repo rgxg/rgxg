@@ -21,11 +21,16 @@ AM_INIT_AUTOMAKE([1.10 -Wall -Werror silent-rules subdir-objects])
 
 AC_PROG_CC_C99
 AC_PROG_INSTALL
-AC_PROG_LIBTOOL
 AM_PROG_CC_C_O
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+AC_PROG_LIBTOOL
 PKG_PROG_PKG_CONFIG
 
-AC_CHECK_HEADERS([limits.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([limits.h stddef.h])
+
+AC_TYPE_SIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT8_T
 
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([regcomp strtol])
