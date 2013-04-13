@@ -173,16 +173,16 @@ int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
                     if (max > 1 || (zeros && i != 7 && i != 13)) {
                         EASY_CHAR(')')
                         if (max == 1) {
-                            EASY_CHAR('?');
+                            EASY_CHAR('?')
                         } else { /* max > 1 */
                             EASY_CHAR('{')
-                                if (zeros) {
-                                    EASY_CHAR((i != 7 && i != 13) ? '0' : '1')
-                                        EASY_CHAR(',')
-                                }
+                            if (zeros) {
+                                EASY_CHAR((i != 7 && i != 13) ? '0' : '1')
+                                EASY_CHAR(',')
+                            }
                             n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
                             EASY_CHAR('}')
-                                max = 1;
+                            max = 1;
                         }
                     }
                 }

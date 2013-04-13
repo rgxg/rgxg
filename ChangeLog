@@ -3,7 +3,7 @@
 	  - remove 'doc/rgxg' and 'include/rgxg' directories on 'uninstall'
 	  - added AUTHORS, COPYING and NEWS files to 'dist_doc_DATA'
     * src/range.c, man/rgxg.1:
-	 - changed some wording
+	  - changed some wording
     * lib/net.c:
 	  - fixed several bugs with IPv6 regex generation
 
