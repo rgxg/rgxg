@@ -30,7 +30,7 @@ man_MANS = man/rgxg.1 man/rgxg_number_range.3 \
 		   man/rgxg_utils_alternation.3
 
 EXTRA_DIST = lib/rgxg.pc.in $(man_MANS)
-dist_doc_DATA=README
+dist_doc_DATA=AUTHORS COPYING NEWS README
 
 install-data-hook:
 	rm -f $(DESTDIR)$(man3dir)/rgxg_number_greaterequal.3
