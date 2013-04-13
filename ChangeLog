@@ -4,6 +4,8 @@
 	  - added AUTHORS, COPYING and NEWS files to 'dist_doc_DATA'
     * src/range.c, man/rgxg.1:
 	 - changed some wording
+    * lib/net.c:
+	  - fixed several bugs with IPv6 regex generation
 
 2013-04-12	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/utils.h, lib/utils.c:

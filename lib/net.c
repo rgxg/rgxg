@@ -138,9 +138,6 @@ int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
                     open_parentheses++;
                     EASY_CHAR('(')
                 }
-                if (j < 13) { EASY_CHAR(':') }
-                if (j < 8) { EASY_CHAR(':') }
-                if (j != 7 && j != 13) { EASY_CHAR('|') }
                 if (j%8 < 7) { EASY_CHAR(':') }
                 i++; /* omit current zero hextet */
                 zeros = 1;
@@ -164,7 +161,7 @@ int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
                     if (zeros && first.hextet[i] != 0) {
                         zeros = 0;
                     }
-                    if (max > 1) {
+                    if (max > 1 || (zeros && i != 7 && i != 13)) {
                         EASY_CHAR('(')
                     }
                     if (i > 0) {
@@ -173,17 +170,26 @@ int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
                     n+= rgxg_number_range(first.hextet[i], last.hextet[i],
                             16, 4, (regex ? regex+n : NULL),
                             (options&(RGXG_NOUPPERCASE|RGXG_NOLOWERCASE))|RGXG_VARLEADINGZERO|RGXG_NONULLBYTE);
-                    if (max > 1) {
+                    if (max > 1 || (zeros && i != 7 && i != 13)) {
                         EASY_CHAR(')')
-                        EASY_CHAR('{')
-                        if (zeros) {
-                            EASY_CHAR('1')
-                            EASY_CHAR(',')
+                        if (max == 1) {
+                            EASY_CHAR('?');
+                        } else { /* max > 1 */
+                            EASY_CHAR('{')
+                                if (zeros) {
+                                    EASY_CHAR((i != 7 && i != 13) ? '0' : '1')
+                                        EASY_CHAR(',')
+                                }
+                            n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
+                            EASY_CHAR('}')
+                                max = 1;
                         }
-                        n += internal_plain_number_base10(max, (regex ? regex+n : NULL));
-                        EASY_CHAR('}')
-                        max = 1;
                     }
+                }
+                if (zeros && j < 8) {
+                    if (j != 7) { EASY_CHAR('|') }
+                    EASY_CHAR(':')
+                    EASY_CHAR(':')
                 }
                 if (!k) {
                     EASY_CHAR('|')
