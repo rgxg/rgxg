@@ -78,7 +78,7 @@ void range_print_help () {
         "    -h         display this help message\n"
         "    -z         only match numbers with leading zeros\n"
         "    -Z         match numbers with a variable number of leading zeros\n"
-        "    -m LENGTH  with -z or -Z, only match numbers with a minimum length LENGTH\n"
+        "    -m LENGTH  with -z or -Z, the minimum LENGTH of matched numbers\n"
         "\n"
     );
 }

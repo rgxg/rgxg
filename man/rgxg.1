@@ -211,20 +211,22 @@ Display help and exit.
 .TP
 \-z
 Only match numbers with leading zeros. By default the number of leading
-zeros depends on the length of the given LAST number (see also
+zeros depends on the length (i.e. the number of digits) of LAST (see also
 \fB\-m\fR). The default is to not match numbers with leading zeros.
 
 .TP
 \-Z
-Match numbers with a variable number of leading zeros. By default the
-maximum number of leading zeros depends on the length of the given LAST
-number (see also \fB\-m\fR).
+Match numbers with a variable number of leading zeros. By default the maximum
+number of leading zeros depends on the length (i.e. the number of digits) of
+LAST (see also \fB\-m\fR). The default is to not match numbers with leading
+zeros.
 
 .TP
 \-m \fILENGTH\fR
-with \fB\-z\fR or \fB\-Z\fR, only match numbers with a minimum length
-LENGTH. If LENGTH is lesser than or equal to the length of the given
-LAST number this option has no effect.
+with \fB\-z\fR or \fB\-Z\fR, the minimum LENGTH of matched numbers. For
+instance the number 5 with LENGTH set to 3 and \fB\-z\fR option set is matched
+as '005'. If LENGTH is lesser than or equal to the number of digits of LAST,
+this option has no effect.
 .RE
 
 .B Examples

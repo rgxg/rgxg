@@ -2,6 +2,8 @@
     * Makefile.am:
 	  - remove 'doc/rgxg' and 'include/rgxg' directories on 'uninstall'
 	  - added AUTHORS, COPYING and NEWS files to 'dist_doc_DATA'
+    * src/range.c, man/rgxg.1:
+	 - changed some wording
 
 2013-04-12	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* include/rgxg/utils.h, lib/utils.c:
