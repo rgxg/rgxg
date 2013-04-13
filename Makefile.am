@@ -44,5 +44,7 @@ uninstall-hook:
 	rm -f $(DESTDIR)$(man3dir)/rgxg_number_greaterequal.3
 	rm -f $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv4.3
 	rm -f $(DESTDIR)$(man3dir)/rgxg_net_cidr_ipv6.3
+	rmdir $(DESTDIR)$(docdir) || true
+	rmdir $(DESTDIR)$(librgxgincludedir) || true
 
 DISTCLEANFILES = lib/rgxg.pc
