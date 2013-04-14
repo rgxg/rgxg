@@ -150,7 +150,7 @@ int rgxg_net_cidr_ipv6 (const rgxg_ipv6_t *address, int prefix, char *regex,
             }
             for (int k = !zeros ; k < 2; ++k) {
                 for (; i < ((k && !zeros) ? (j%8)+1 : (j>7 ? 6 : 8)) ; ++i) {
-                    if (zeros || (RGXG_NOZEROCOMPRESSION&options)) {
+                    if (zeros || (RGXG_NOZEROCOMPRESSION&options) || !k) {
                         while (i > 0 && i < (j >= 8 || (mixed_parenthesis < 0 && !(RGXG_NOMIXEDNOTATION&options)) ? 5 : 7)
                                 && first.hextet[i] == first.hextet[i+1] && last.hextet[i] == last.hextet[i+1]) {
                             if (RGXG_NOZEROCOMPRESSION&options) { j++; }
