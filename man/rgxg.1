@@ -1,4 +1,4 @@
-.TH RGXG 1 "Apr 13, 2013" "" "User Commands"
+.TH RGXG 1 "Apr 14, 2013" "" "User Commands"
 .SH "NAME"
 rgxg \- ReGular eXpression Generator
 .SH "SYNOPSIS"
@@ -112,15 +112,15 @@ Match 2001:db8:aaaa:bbbb:cccc:dddd::/96 limited to lower case letters:
 .RS 3
 .nf
 $ rgxg cidr \-l 2001:db8:aaaa:bbbb:cccc:dddd::/112
-2001:0?db8:aaaa:bbbb:cccc:dddd((::|::[0-9a-f]{1,4}|:0?0?0?0(::|:[0-9a-f]{1,4}))|:0\.0(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){2})
+2001:0?db8:aaaa:bbbb:cccc:dddd((::[0-9a-f]{1,4}|::|:0?0?0?0(::|:[0-9a-f]{1,4}))|:0\.0(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){2})
 .fi
 
 .RE
-Match 2001:1890:1112::/48 restricted to uncompressed standard notation:
+Match 2001:db8:1234::/48 restricted to uncompressed standard notation:
 .RS 3
 .nf
-$ rgxg cidr \-u \-s 2001:1890:1112::/48
-2001:1890:1112(:[0-9A-Fa-f]{1,4}){5}
+$ rgxg cidr \-u \-s 2001:db8:1234::/48
+2001:0?[Dd][Bb]8:1234(:[0-9A-Fa-f]{1,4}){5}
 .fi
 .RE
 
