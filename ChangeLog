@@ -3,6 +3,8 @@
 	  - optimized IPv6 regex generation
 	* man/rgxg.1:
 	  - adjusted 'rgxg cidr' examples
+	* README:
+	  - completed 'Source Code Verification' section
 
 2013-04-13	Hannes von Haugwitz <hannes@vonhaugwitz.com>
     * Makefile.am:

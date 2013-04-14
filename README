@@ -9,7 +9,7 @@ Introduction
 rgxg (ReGular eXpression Generator) is a C library and a command-line tool
 to generate (extended) regular expressions.
 
-The homepage of rgxg is <http://rgxg.sourceforge.net/>.
+The homepage of rgxg is <http://rgxg.sourceforge.net>.
 
 
 License
@@ -30,8 +30,33 @@ source code.
 Source Code Verification
 ------------------------
 
-The source code verification instructions will be published with the
-first release.
+It is recommended to check that the source code of rgxg downloaded is an
+original and unmodified one. You can either verify the source tarball or the
+git tag.
+
+To check the supplied signature with GnuPG:
+
+  gpg --verify rgxg-<VERSION_NUMBER>.tar.gz.asc
+
+This checks that the detached signature file is indeed a valid signature
+of rgxg-<VERSION_NUMBER>.tar.gz.
+
+To validate the gpg signature of a git tag:
+
+  git verify-tag v<VERSION_NUMBER>
+
+The public key needed for signature verification is:
+
+    pub   4096R/68E7B931 2011-06-28 [expires: 2017-06-26]
+    uid                  Hannes von Haugwitz <hannes@vonhaugwitz.com>
+
+If you do not have this key, you can get from one of the well known PGP key
+servers. You have to make sure that the key you install is not a faked one. You
+can do this with reasonable assurance by comparing the output of:
+
+  gpg --fingerprint 0x68E7B931
+
+with the key fingerprint published elsewhere.
 
 
 Installation
