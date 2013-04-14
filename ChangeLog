@@ -5,6 +5,7 @@
 	  - adjusted 'rgxg cidr' examples
 	* README:
 	  - completed 'Source Code Verification' section
+	* Released rgxg 0.1 (libtool version 0.0.0)
 
 2013-04-13	Hannes von Haugwitz <hannes@vonhaugwitz.com>
     * Makefile.am:
