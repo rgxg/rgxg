@@ -9,7 +9,7 @@ Introduction
 rgxg (ReGular eXpression Generator) is a C library and a command-line tool
 to generate (extended) regular expressions.
 
-The homepage of rgxg is <http://rgxg.sourceforge.net>.
+The homepage of rgxg is <https://rgxg.github.io>.
 
 
 License
@@ -22,8 +22,8 @@ details.
 Getting source
 --------------
 
-rgxg is currently maintained on SourceForge. Please visit
-http://sourceforge.net/projects/rgxg/ to get the newest version of the
+rgxg is currently maintained on GitHub. Please visit
+https://github.com/rgxg/rgxg/ to get the newest version of the
 source code.
 
 
@@ -68,8 +68,7 @@ configuration files first:
     $ sh ./autogen.sh
 
 NOTE: The library version (see m4/lib_version.m4) is only changed if needed
-      just before a public release (i.e. a tarball release announced on the
-      rgxg-announce mailing list).
+      just before a stable release.
 
 For generic installation instructions please see the INSTALL file.
 
@@ -84,19 +83,8 @@ See './configure --help' for the available configuration options.
 Feedback and Support
 --------------------
 
-There are several mailing lists to support users and developers:
-
-rgxg-announce: rgxg update and release announcements list
-    http://lists.sourceforge.net/lists/listinfo/rgxg-announce
-
-rgxg-devel: rgxg development discussion list
-    http://lists.sourceforge.net/lists/listinfo/rgxg-devel
-
-rgxg-commits: rgxg Git commits
-    http://lists.sourceforge.net/lists/listinfo/rgxg-commits
-
-At the moment please report bugs and feature request to the rgxg-devel
-mailing list.
+Please report bugs and feature requests to the rgxg issue tracker
+(https://github.com/rgxg/rgxg/issues).
 
 
 Credits

@@ -3,7 +3,7 @@ AC_PREREQ([2.67])
 m4_include([m4/version.m4])
 m4_include([m4/lib_version.m4])
 
-AC_INIT([rgxg], [_PACKAGE_VERSION], [rgxg-devel@lists.sourceforge.net], [rgxg], [rgxg.sf.net])
+AC_INIT([rgxg], [_PACKAGE_VERSION], [https://github.com/rgxg/rgxg/issues], [rgxg], [rgxg.github.io])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR(build-aux)
 AC_CONFIG_SRCDIR([src/main.c])

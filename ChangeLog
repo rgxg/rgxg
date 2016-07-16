@@ -1,3 +1,6 @@
+2016-07-16	Hannes von Haugwitz <hannes@vonhaugwitz.com>
+	* Move to GitHub
+
 2013-04-14	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* lib/net.c:
 	  - optimized IPv6 regex generation

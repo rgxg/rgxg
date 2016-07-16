@@ -2,8 +2,7 @@
 #
 # See the libtool manual to understand the meaning of the fields.
 #
-# Note: The version is only changed if needed just before a public release
-#       (i.e. a tarball release announced on the rgxg-announce mailing list).
+# Note: The version is only changed if needed just before a stable release.
 #
 
 m4_define([_LIB_CURRENT], [0])

@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: rgxg
 Description: The rgxg Library
-URL: rgxg.sf.net
+URL: rgxg.github.io
 Version: @VERSION@
 Libs: -L${libdir} -lrgxg
 Cflags: -I${includedir}
