@@ -1,5 +1,6 @@
 2016-08-02	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* Add 'NOTES' section to rgxg man page
+	* Release rgxg 0.1.1 (libtool version 0.0.0)
 
 2016-07-16	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* Move to GitHub
