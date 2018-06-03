@@ -1,3 +1,6 @@
+2017-02-03	Hauke Loeffler <mail@hauke-loeffler.de>
+	* Fixed wrong indentation method in ChangeLog
+
 2016-08-02	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* Add 'NOTES' section to rgxg man page
 	* Release rgxg 0.1.1 (libtool version 0.0.0)
@@ -15,12 +18,12 @@
 	* Released rgxg 0.1 (libtool version 0.0.0)
 
 2013-04-13	Hannes von Haugwitz <hannes@vonhaugwitz.com>
-    * Makefile.am:
+	* Makefile.am:
 	  - remove 'doc/rgxg' and 'include/rgxg' directories on 'uninstall'
 	  - added AUTHORS, COPYING and NEWS files to 'dist_doc_DATA'
-    * src/range.c, man/rgxg.1:
+	* src/range.c, man/rgxg.1:
 	  - changed some wording
-    * lib/net.c:
+	* lib/net.c:
 	  - fixed several bugs with IPv6 regex generation
 
 2013-04-12	Hannes von Haugwitz <hannes@vonhaugwitz.com>
