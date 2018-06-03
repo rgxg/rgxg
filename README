@@ -47,7 +47,7 @@ To validate the gpg signature of a git tag:
 
 The public key needed for signature verification is:
 
-    pub   4096R/68E7B931 2011-06-28 [expires: 2017-06-26]
+    pub   4096R/68E7B931 2011-06-28 [expires: 2021-06-27]
     uid                  Hannes von Haugwitz <hannes@vonhaugwitz.com>
 
 If you do not have this key, you can get from one of the well known PGP key
@@ -58,6 +58,13 @@ can do this with reasonable assurance by comparing the output of:
 
 with the key fingerprint published elsewhere.
 
+Build requirements:
+-------------------
+    * autoconf (when building from git)
+    * automake (when building from git)
+    * libtool (when building from git)
+    * make
+    * C-compiler (such as gcc)
 
 Installation
 ------------
@@ -70,7 +77,8 @@ configuration files first:
 NOTE: The library version (see m4/lib_version.m4) is only changed if needed
       just before a stable release.
 
-For generic installation instructions please see the INSTALL file.
+For generic installation instructions please see the INSTALL file (generated
+by autogen.sh).
 
 In short, just type:
     $ ./configure
