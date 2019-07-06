@@ -9,7 +9,9 @@ compiler:
   - gcc
   - clang
 
+before_script:
+  - sh autogen.sh
+
 script:
-  - sh ./autogen.sh
   - ./configure
   - make
