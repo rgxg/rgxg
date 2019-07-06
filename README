@@ -47,14 +47,14 @@ To validate the gpg signature of a git tag:
 
 The public key needed for signature verification is:
 
-    pub   4096R/68E7B931 2011-06-28 [expires: 2021-06-27]
+    pub   rsa4096/0xF6947DAB68E7B931 2011-06-28 [C] [expires: 2023-06-27]
     uid                  Hannes von Haugwitz <hannes@vonhaugwitz.com>
 
 If you do not have this key, you can get from one of the well known PGP key
 servers. You have to make sure that the key you install is not a faked one. You
 can do this with reasonable assurance by comparing the output of:
 
-  gpg --fingerprint 0x68E7B931
+  gpg --fingerprint 0xF6947DAB68E7B931
 
 with the key fingerprint published elsewhere.
 
