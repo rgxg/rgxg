@@ -66,6 +66,8 @@ Build requirements:
     * make
     * C-compiler (such as gcc)
 
+    * libcheck (optional, needed for 'make check', license: LGPL-2.1)
+
 Installation
 ------------
 

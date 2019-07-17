@@ -17,7 +17,7 @@ AC_SUBST(LIB_CURRENT)
 AC_SUBST(LIB_REVISION)
 AC_SUBST(LIB_AGE)
 
-AM_INIT_AUTOMAKE([1.10 -Wall -Werror silent-rules subdir-objects])
+AM_INIT_AUTOMAKE([1.10 -Wall -Werror silent-rules subdir-objects serial-tests])
 
 AC_PROG_CC_C99
 AC_PROG_INSTALL
@@ -26,6 +26,9 @@ m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 AC_PROG_LN_S
 AC_PROG_LIBTOOL
 PKG_PROG_PKG_CONFIG
+
+PKG_CHECK_MODULES(CHECK, [check >= 0.9.4], , [AC_MSG_RESULT([Check not found (testing via 'make check' disabled)])])
+AM_CONDITIONAL(HAVE_CHECK, [test "x$CHECK_LIBS" != "x"])
 
 AC_CHECK_HEADERS([limits.h stddef.h])
 

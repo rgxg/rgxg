@@ -25,6 +25,16 @@ rgxg_LDADD = librgxg.la
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = lib/rgxg.pc
 
+if HAVE_CHECK
+TESTS						= check_rgxg
+check_PROGRAMS				= check_rgxg
+check_rgxg_SOURCES			= tests/check_rgxg.c \
+							  tests/check_rgxg_net.c \
+							  tests/check_rgxg_number.c
+check_rgxg_CFLAGS			= -I$(top_srcdir)/include $(CHECK_CFLAGS)
+check_rgxg_LDADD			= librgxg.la $(CHECK_LIBS)
+endif # HAVE_CHECK
+
 man_MANS = man/rgxg.1 man/rgxg_number_range.3 \
 		   man/rgxg_net_cidr_string.3 man/rgxg_utils_escape_string.3 \
 		   man/rgxg_utils_alternation.3
