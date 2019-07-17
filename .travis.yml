@@ -9,9 +9,18 @@ compiler:
   - gcc
   - clang
 
+addons:
+  apt:
+    packages:
+      - check
+  homebrew:
+    packages:
+      - check
+
 before_script:
   - sh autogen.sh
 
 script:
   - ./configure
   - make
+  - make check
