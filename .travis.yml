@@ -16,6 +16,7 @@ addons:
   homebrew:
     packages:
       - check
+    update: true
 
 before_script:
   - sh autogen.sh
