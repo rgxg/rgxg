@@ -68,7 +68,7 @@ module_t modules[] = {
 };
 
 static void print_version(void) {
-    fprintf(stdout, PACKAGE_NAME " " PACKAGE_VERSION "\n\n");
+    fprintf(stdout, "%s %s\n\n", PACKAGE_NAME, PACKAGE_VERSION);
 }
 
 static void print_help() {
