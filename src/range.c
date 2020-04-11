@@ -1,6 +1,6 @@
 /* rgxg - ReGular eXpression Generator
  *
- * Copyright (c) 2013 Hannes von Haugwitz
+ * Copyright (c) 2013,2020 Hannes von Haugwitz
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -32,10 +32,10 @@
 
 #include "common_macros.h"
 
-/* needed for atoi, strtoll */
+/* needed for strtol, strtoll */
 #include <stdlib.h>
 
-/* used with strtoll */
+/* used with strtol, strtoll */
 #include <errno.h>
 
 /* needed for LLONG_MAX */
@@ -50,9 +50,9 @@
 /* needed for isprint, isdigit */
 #include <ctype.h>
 
-int base, input_base;
+int input_base;
 
-long min_length;
+long base, min_length;
 
 long long first, last;
 
@@ -90,16 +90,6 @@ void range_set_defaults () {
     min_length = 0;
 }
 
-#define EASY_BASE_PARSE(option, variable) \
-case option: \
-    variable = atoi(optarg); \
-    if (variable < 2 || variable > 32) { \
-        fprintf (stderr, "rgxg range: invalid base: %s (The base must be between 2 and 32 inclusive).\n", optarg); \
-        cont = 0; \
-        exit_status = 1; \
-    } \
-    break;
-
 int range_argv_parse (int argc, char **argv) {
     int cont = 1;
     int c;
@@ -108,7 +98,15 @@ int range_argv_parse (int argc, char **argv) {
         switch (c) {
             EASY_HELP_OPTION(range)
             EASY_NOOUTERPARENS_OPTION
-            EASY_BASE_PARSE('b', base)
+            case 'b':
+                base = strtol(optarg, NULL, 10);
+                if ((errno == ERANGE && (base == LONG_MIN || base == LONG_MAX))
+                   || (base < 2 || base > 32)) {
+                    fprintf (stderr, "rgxg range: invalid base: %s (The base must be between 2 and 32 inclusive).\n", optarg);
+                    cont = 0;
+                    exit_status = 1;
+                }
+                break;
             EASY_MUTEX_OPTION(range, 'z', 'Z', RGXG_LEADINGZERO, RGXG_VARLEADINGZERO)
             EASY_MUTEX_OPTION(range, 'Z', 'z', RGXG_VARLEADINGZERO, RGXG_LEADINGZERO)
             EASY_MUTEX_OPTION(range, 'l', 'U', RGXG_NOUPPERCASE, RGXG_NOLOWERCASE)
