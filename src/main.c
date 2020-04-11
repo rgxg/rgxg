@@ -1,6 +1,6 @@
 /* rgxg - ReGular eXpression Generator
  *
- * Copyright (c) 2010-2013 Hannes von Haugwitz
+ * Copyright (c) 2010-2013,2020 Hannes von Haugwitz
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -24,6 +24,9 @@
 
 #include "config.h"
 
+/* needed for rgxg_options_t */
+#include "rgxg/types.h"
+
 /* needed for rgxg commands */
 #include "alternation.h"
 #include "escape.h"
@@ -40,6 +43,8 @@
 #include <string.h>
 
 int exit_status;
+
+rgxg_options_t options;
 
 typedef struct module_s {
     char *command;

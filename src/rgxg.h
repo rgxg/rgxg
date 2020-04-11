@@ -1,6 +1,6 @@
 /* rgxg - ReGular eXpression Generator
  *
- * Copyright (c) 2013 Hannes von Haugwitz
+ * Copyright (c) 2013,2020 Hannes von Haugwitz
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -25,6 +25,11 @@
 #ifndef _RGXG_H_INCLUDED
 #define _RGXG_H_INCLUDED
 
+/* needed for rgxg_options_t */
+#include "rgxg/types.h"
+
 extern int exit_status;
+
+extern rgxg_options_t options;
 
 #endif /* _RGXG_H_INCLUDED */

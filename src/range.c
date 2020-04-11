@@ -24,7 +24,7 @@
 
 #include "range.h"
 
-/* needed for exit_status */
+/* needed for exit_status, options */
 #include "rgxg.h"
 
 /* needed for rgxg_number* */
@@ -55,8 +55,6 @@ int input_base;
 long base, min_length;
 
 long long first, last;
-
-rgxg_options_t options;
 
 static int is_string_of_digits(const char *string) {
     int i = 0;

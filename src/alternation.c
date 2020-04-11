@@ -1,6 +1,6 @@
 /* rgxg - ReGular eXpression Generator
  *
- * Copyright (c) 2013 Hannes von Haugwitz
+ * Copyright (c) 2013,2020 Hannes von Haugwitz
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -25,7 +25,7 @@
 #include "alternation.h"
 #include "common_macros.h"
 
-/* needed for exit_status */
+/* needed for exit_status, options */
 #include "rgxg.h"
 
 /* needed for rgxg_utils_alternation */
@@ -39,8 +39,6 @@
 
 char** list;
 int length;
-
-rgxg_options_t options;
 
 void alternation_print_help () {
     fprintf(stdout,
