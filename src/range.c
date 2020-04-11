@@ -97,9 +97,9 @@ int range_argv_parse (int argc, char **argv) {
             EASY_HELP_OPTION(range)
             EASY_NOOUTERPARENS_OPTION
             case 'b':
-                base = strtol(optarg, NULL, 10);
+                base = strtol(optarg, &ptr, 10);
                 if ((errno == ERANGE && (base == LONG_MIN || base == LONG_MAX))
-                   || (base < 2 || base > 32)) {
+                   || (base < 2 || base > 32) || *ptr != '\0') {
                     fprintf (stderr, "rgxg range: invalid base: %s (The base must be between 2 and 32 inclusive).\n", optarg);
                     cont = 0;
                     exit_status = 1;
