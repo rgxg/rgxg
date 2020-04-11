@@ -1,6 +1,6 @@
 /* rgxg - ReGular eXpression Generator
  *
- * Copyright (c) 2010-2013 Hannes von Haugwitz
+ * Copyright (c) 2010-2013,2020 Hannes von Haugwitz
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -223,7 +223,7 @@ int rgxg_number_range (long long first, long long last, int base,
         current_last = last;
 
         do {
-            min = max = 0;
+            max = 0;
             prefix = current_last/base;
             prefix_range_first = first/base != current_last/base ? 0 : first%base;
             prefix_range_last = current_last%base;
