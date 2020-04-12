@@ -1,5 +1,25 @@
-2018-06-03	Hannes von Haugwitz <hannes@vonhaugwitz.com>
-	* Update README
+2020-04-12  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
+	* Add missing header file to check_rgxg_SOURCES
+
+2020-04-11  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
+	* Fail on invalid base argument
+	* Fix compiler warnings/errors
+	  - remove useless assignment
+	  - use constant format string
+	  - don't define 'options' variable multiple times (closes #5)
+	  - use 'strtol' instead of 'atoi'
+
+2019-07-17  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
+	* Add some unit tests
+
+2019-07-11  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
+	* Add 'autoreconf-clean' Makefile target
+
+2019-07-06  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
+	* Use long OpenPGP key ID in README
+
+2018-06-03  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
+	* Update README (closes #2)
 
 2016-08-02	Hannes von Haugwitz <hannes@vonhaugwitz.com>
 	* Add 'NOTES' section to rgxg man page
