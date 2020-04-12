@@ -1,5 +1,6 @@
 2020-04-12  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
 	* Add missing header file to check_rgxg_SOURCES
+	* Release rgxg 0.1.2 (libtool version 0:1:0)
 
 2020-04-11  Hannes von Haugwitz  <hannes@vonhaugwitz.com>
 	* Fail on invalid base argument
