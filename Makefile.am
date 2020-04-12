@@ -29,6 +29,7 @@ if HAVE_CHECK
 TESTS						= check_rgxg
 check_PROGRAMS				= check_rgxg
 check_rgxg_SOURCES			= tests/check_rgxg.c \
+							  tests/check_rgxg.h \
 							  tests/check_rgxg_net.c \
 							  tests/check_rgxg_number.c
 check_rgxg_CFLAGS			= -I$(top_srcdir)/include $(CHECK_CFLAGS)
