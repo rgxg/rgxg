@@ -75,7 +75,7 @@ static void print_help() {
     int n = sizeof(modules)/sizeof(module_t);
     int i;
     fprintf(stdout,
-                "Usage: rgxg COMMAND [ARGS]\n\n"
+                "Usage: rgxg [-v] [-h] COMMAND [ARGS]\n\n"
                 "The available rgxg commands are:\n"
                 );
     for (i = 0 ; i < n ; ++i) {
@@ -104,7 +104,7 @@ int main(int argc, char* *argv) {
     if (argc < 2) {
         print_help();
         exit_status = 1;
-    } else if (!(strcmp("help", argv[1]))) { /* 'help' command */
+    } else if (!(strcmp("-h", argv[1]) && strcmp("help", argv[1]))) { /* 'help' command */
         if (argc >= 3) {
             if ((module = get_module(argv[2])) != NULL) {
                 module->print_help();
@@ -117,7 +117,7 @@ int main(int argc, char* *argv) {
             print_help();
             exit_status = 0;
         }
-    } else if (!(strcmp("version", argv[1]))) { /* 'version' command */
+    } else if (!(strcmp("-v", argv[1]) && strcmp("version", argv[1]))) { /* 'version' command */
             print_version();
             exit_status = 0;
     } else {
