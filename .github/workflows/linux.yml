@@ -1,0 +1,30 @@
+---
+name: rgxg CI Linux
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        compiler: [gcc, clang]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: sudo apt install check
+      - name: autoconf
+        run: sh autogen.sh
+      - name: configure
+        run: ./configure
+        env:
+          CC: ${{ matrix.compiler }}
+      - name: make
+        run: make
+      - name: make check
+        run: make check
+      - name: make distcheck
+        run: make distcheck
